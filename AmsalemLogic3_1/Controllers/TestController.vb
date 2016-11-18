@@ -1,5 +1,6 @@
 ﻿Imports System.Web.Mvc
 Imports AmsalemLogic.NewLogic
+Imports AmsalemLogic.NewLogic.Classes
 Imports AmsalemLogic.VBClasses
 Imports AmsalemLogic.VBClasses.Administration
 
@@ -8,14 +9,16 @@ Namespace Controllers
         Inherits Controller
 
         Function MyView() As ActionResult
-            Dim TestClass = New TestClass()
-            Return View(TestClass)
+            PermissionCheck("Watch Financials")
+            Dim TestClass = New PaidByUsHandler()
+            'Return View(TestClass)
+            Return View()
         End Function
 
-        Sub PermissionExample()
+        Sub PermissionCheck(permissionName As String)
             Dim user = ClassUsers.GetCurrentUser()
             Dim userPermission = New UserPermissionHandler()
-            Dim permission = userPermission.IsActionAllowed(user.PermissionGroup, "Watch Financials", "")
+            Dim permission = userPermission.IsActionAllowed(user.PermissionGroup, permissionName, "")
             If (Not permission) Then
                 Throw New ApplicationException(userPermission.UNAUTHORIZED_MESSAGE)
             End If
