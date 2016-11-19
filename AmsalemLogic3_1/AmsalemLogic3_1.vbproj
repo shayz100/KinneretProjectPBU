@@ -313,6 +313,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Amsalem.Types\Amsalem.Types.csproj">
+      <Project>{8bf7f0cd-2309-4b03-ba0d-b67cccf1b424}</Project>
+      <Name>Amsalem.Types</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AmsalemLogic.NewLogic\AmsalemLogic.NewLogic.csproj">
       <Project>{ac435b2a-6575-4c47-bb73-6cf744a34c86}</Project>
       <Name>AmsalemLogic.NewLogic</Name>

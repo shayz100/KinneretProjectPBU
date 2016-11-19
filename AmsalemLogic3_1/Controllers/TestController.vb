@@ -11,8 +11,8 @@ Namespace Controllers
         Function MyView() As ActionResult
             PermissionCheck("Watch Financials")
             Dim TestClass = New PaidByUsHandler()
-            'Return View(TestClass)
-            Return View()
+            Return View(TestClass)
+            'Return View()
         End Function
 
         Sub PermissionCheck(permissionName As String)
