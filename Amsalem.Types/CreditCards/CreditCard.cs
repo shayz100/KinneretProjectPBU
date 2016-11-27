@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
 
 namespace Amsalem.Types.CreditCards
 {
-    public class CreditCard
+    
+    public  class CreditCard
     {
+        
         public PaymentMethodCreditCardOwner CreditCardOwner { get; set; }
-
+        
         public string CustomerID { get; set; }
 
+        
         public string ContactPersonId { get; set; }
 
         public string CreditCardType { get; set; }
@@ -17,6 +25,7 @@ namespace Amsalem.Types.CreditCards
 
         public string OwnerName { get; set; }
 
+        [Key]
         public string CreditCardNumber { get; set; }
 
         public string CreditCardIdentifier { get; set; }
@@ -33,6 +42,7 @@ namespace Amsalem.Types.CreditCards
 
         public string CreditCardTerminal { get; set; }
 
+        
         public EBackOfficeType BackOffice{ get; set; }
 
         public string Source
@@ -58,4 +68,6 @@ namespace Amsalem.Types.CreditCards
             CreditCardOwner = PaymentMethodCreditCardOwner.OurCC;
         }
     }
+
+
 }
