@@ -24,4 +24,6 @@ Public Class ApplicationDbContext
     Public Shared Function Create() As ApplicationDbContext
         Return New ApplicationDbContext()
     End Function
+
+    Public Property CreditCards As System.Data.Entity.DbSet(Of Amsalem.Types.CreditCards.CreditCard)
 End Class
