@@ -9,16 +9,10 @@ namespace AmsalemLogic.NewLogic.Classes
 {
    public class PaidByUsHandler
     {
-        public  PaidByUsHandler()
-        {
-            
-          
-        }
-
         public List<CreditCard> GetAllCards()
         {
-            var s = new AXRertrieveCreditCards();
-            var cards = s.GetAllPaidByUsCreditCards();
+            var retriever = new AXRertrieveCreditCards();
+            var cards = retriever.GetAllPaidByUsCreditCards();
             return cards;
         }
         

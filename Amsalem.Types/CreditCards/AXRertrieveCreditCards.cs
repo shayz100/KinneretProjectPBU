@@ -116,19 +116,24 @@ namespace Amsalem.Types.CreditCards
             toAdd.CustomerID = (string.IsNullOrEmpty(AMS_EmpGovernmentId) ? row.Field<long>("RECID").ToString() : AMS_EmpGovernmentId);
             toAdd.CreditCardNumber = row.Field<string>("CREDITCARDNO");
             toAdd.CreditCardType = row.Field<string>("COMPANYID");
+            toAdd.Status = row.Field<int>("STATUS");
+
             if (toAdd.CreditCardType != null && toAdd.CreditCardType.Length > 2)
             {
                 toAdd.CreditCardType = toAdd.CreditCardType.Substring(toAdd.CreditCardType.Length - 2);
             }
+
             toAdd.BankNumber = row.Field<int>("AMS_BANKNUMBER");
             toAdd.AxCompany = row.Field<string>("DATAAREAID").ToUpper();
             toAdd.BackOffice = EBackOfficeType.AX;
+
             var date = row.Field<string>("EXPIRYDATE");
             var split = date.Split('/');
             DateTime newDate = new DateTime(int.Parse(split[1]) + 2000, int.Parse(split[0]), 1);
             var nextMonth = newDate.AddMonths(1);
             var firstDayOfNextMonth = new DateTime(nextMonth.Year, nextMonth.Month, 1);
             toAdd.CreditCardExpirationDate = firstDayOfNextMonth.AddDays(-1);
+
             return toAdd;
         }
 
@@ -140,7 +145,7 @@ namespace Amsalem.Types.CreditCards
 
         public List<CreditCard> GetAllPaidByUsCreditCards()
         { 
-            string AxDBStatement ="select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId";
+            string AxDBStatement ="select EXPIRYDATE, STATUS, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId";
             AxDBStatement += "  from [ELI_AMSALEMCREDITCARD]                                                                         ";
             AxDBStatement += "  where DATAAREAID = @AxCompany                                                                        ";
 

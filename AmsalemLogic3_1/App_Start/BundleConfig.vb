@@ -4,8 +4,13 @@ Public Module BundleConfig
     ' For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
     Public Sub RegisterBundles(ByVal bundles As BundleCollection)
 
-        bundles.Add(New ScriptBundle("~/bundles/jquery").Include(
-                    "~/Scripts/jquery-{version}.js"))
+        bundles.Add(New ScriptBundle("~/bundles/lib").Include(
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/bootstrap.js",
+                        "~/Scripts/respond.js",
+                        "~/Scripts/datatables/jquery.datatables.js",
+                        "~/Scripts/datatables/datatables.bootstrap.js"
+                        ))
 
         bundles.Add(New ScriptBundle("~/bundles/jqueryval").Include(
                     "~/Scripts/jquery.validate*"))
@@ -15,13 +20,9 @@ Public Module BundleConfig
         bundles.Add(New ScriptBundle("~/bundles/modernizr").Include(
                     "~/Scripts/modernizr-*"))
 
-        bundles.Add(New ScriptBundle("~/bundles/bootstrap").Include(
-                  "~/Scripts/bootstrap.js",
-                  "~/Scripts/respond.js"))
-
         bundles.Add(New StyleBundle("~/Content/css").Include(
                   "~/Content/bootstrap.css",
+                  "~/Content/datatables/css/datatables.bootstrap.css",
                   "~/Content/site.css"))
     End Sub
 End Module
-
