@@ -15,7 +15,7 @@ namespace AmsalemLogic.NewLogic.Classes
           
         }
 
-        public List<CreditCard> BringAll()
+        public List<CreditCard> GetAllCards()
         {
             var s = new AXRertrieveCreditCards();
             var cards = s.GetAllPaidByUsCreditCards();

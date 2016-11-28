@@ -5,14 +5,14 @@ Imports AmsalemLogic.VBClasses
 Imports AmsalemLogic.VBClasses.Administration
 
 Namespace Controllers
-    Public Class TestController
+    Public Class CreditCardesController
         Inherits Controller
 
         Function MyView() As ActionResult
-            PermissionCheck("Watch Financials")
-            Dim TestClass = New PaidByUsHandler()
-            Dim R = TestClass.BringAll
-            Return View(R)
+            PermissionCheck("Credit Card Admin")
+            Dim Handler = New PaidByUsHandler()
+            Dim ListOfCardes = Handler.GetAllCards
+            Return View(ListOfCardes)
             'Return View()
         End Function
 

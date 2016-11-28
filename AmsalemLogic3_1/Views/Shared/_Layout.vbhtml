@@ -24,7 +24,7 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                     <li>@Html.ActionLink("Test", "MyView", "Test")</li>
+                     <li>@Html.ActionLink("CreditCardes", "MyView", "CreditCardes")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
