@@ -4,7 +4,7 @@
 
 <html>
 <head>
-
+    
     <script src="~/Scripts/jquery-3.1.1.min.js"></script>
     <link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
     <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
@@ -27,8 +27,8 @@
                 <table id="myTable" class="table table-striped table-bordered table-list">
                     <thead>
                         <tr>
-                            <th>Picture</th>
-                            <th>Credit</th>
+                            <th class="hideArrow">Picture</th>
+                            <th class="hideArrow">Credit</th>
                             <th>Status</th>
                             <th>Back Office</th>
                             <th>CompID</th>
@@ -86,28 +86,6 @@
 
                         </tr>
                     Next
-                    
-
-                                       
-                        @*<td align = "center" >
-                            <a class="btn btn-default"><span class="glyphicon glyphicon-picture"></a>
-                        </td>                                                                                                                                                     
-
-                    <td align="center">
-                        <a class="btn btn-default"><span class="glyphicon glyphicon-usd"></a>
-                    </td>   
-                            @item.Status
-
-                            @item.DataAreaId
-
-                            @item.CompanyId
-
-                            @item.CreditCardNo
-
-                            @item.ExpiryDate
-
-                            @item.Cvv*@
-                       
 
                      </tbody>
                    </table>
