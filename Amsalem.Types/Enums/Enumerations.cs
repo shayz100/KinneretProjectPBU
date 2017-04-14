@@ -54,4 +54,20 @@ namespace Amsalem.Types
         Active,
         Passive
     }
+
+    public enum EServerType
+    {
+        STANDARD = 1,
+        INDIAN = 2,
+        TURKEY = 3,
+        DPC = 4
+    }
+
+    public enum Status
+    {
+        Pending,
+        Payed,
+        Cancelled
+    }
+
 }

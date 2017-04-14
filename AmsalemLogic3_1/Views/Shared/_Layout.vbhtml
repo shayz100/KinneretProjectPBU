@@ -17,12 +17,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Paid By Us", "Index", "Home", New With { .area = "" }, New With { .class = "navbar-brand" })
+                @Html.ActionLink("Paid By Us", "Index", "Home", New With {.area = ""}, New With {.class = "navbar-brand"})
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                    
                      <li>@Html.ActionLink("Credit Cards", "CreditCardTable", "CreditCard")</li>
+                     <li>@Html.ActionLink("Transactions", "TransactionTable", "Transaction")</li>
               
                   </ul>
                 @Html.Partial("_LoginPartial")
@@ -36,6 +37,8 @@
     </div>
 
     @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/validate")
     @RenderSection("scripts", required:=False)
 
 </body>

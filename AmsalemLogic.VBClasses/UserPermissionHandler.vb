@@ -9,10 +9,8 @@ Namespace Administration
 
         Function IsActionAllowed(PermissionGroups As List(Of Integer), ActionCode As String, ActionType As String) As Boolean
             Dim allowd = True
-            ''TODO - return result
             Return allowd
         End Function
-
 
     End Class
 End Namespace

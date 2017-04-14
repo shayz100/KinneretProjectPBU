@@ -13,6 +13,7 @@ namespace Amsalem.Types.CreditCards
 {
     public class AXRertrieveCreditCards : RetrieveCreditCardBase, IRetrieveCardCard
     {
+
         public List<CreditCard> RetrievePaidByUsCreditCardsByManagerClockId(int AgentClockId, bool filterd, string dataAreaID, EBackOfficeType backOffice, bool withVAN = false)
         {
             string source = "AmsLogic_DBConnectionString";
