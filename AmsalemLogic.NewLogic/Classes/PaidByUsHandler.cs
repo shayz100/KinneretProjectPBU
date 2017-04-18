@@ -36,11 +36,30 @@ namespace AmsalemLogic.NewLogic.Classes
 
         public ResultOfOperation CreateNewTransaction(PaidByUsTransaction transaction, ClassUsers user)
         {
-            //TODO
-            var rop = new ResultOfOperation();
-            rop.Message = "Success";
-            return rop;
 
+            var transactionLog = new PaidByUsCreditCardTransactionLog();
+            var resultOfOperation = new ResultOfOperation();
+            Entities db = new Entities();
+            try
+            {
+                transaction.Status = (int)Amsalem.Types.Status.Pending;
+                transaction.CreatedBy = user.WorkerClockId;
+                //transaction.Id = -1;
+                transaction.CreatedDateTime = DateTime.Now;
+                db.PaidByUsTransaction.Add(transaction);
+                db.SaveChanges();
+
+                resultOfOperation.Additional = transaction.Id.ToString();
+                resultOfOperation.Message = "Success";
+                return resultOfOperation;
+
+            }
+            catch (Exception e)
+            {
+                resultOfOperation.Message = "Failed";
+                resultOfOperation.Additional4 = e.Message;
+                return resultOfOperation;
+            }
         }
 
         public PaidByUsTransaction RetrieveTransactionById(int id, bool activeOnly)
@@ -118,5 +137,15 @@ namespace AmsalemLogic.NewLogic.Classes
             return result;
         }
 
+        public PaidByUsTransaction GetTransaction(int id)
+        {
+            Entities db = new Entities();
+            PaidByUsTransaction transaction = new PaidByUsTransaction();
+
+            transaction = db.PaidByUsTransaction.Find(id);
+            return transaction;
+        }
+
+        
     }
 }

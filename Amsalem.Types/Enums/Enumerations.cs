@@ -65,9 +65,9 @@ namespace Amsalem.Types
 
     public enum Status
     {
-        Pending,
-        Payed,
-        Cancelled
+        Pending = 0,
+        Payed = 1,
+        Cancelled = 2
     }
 
 }

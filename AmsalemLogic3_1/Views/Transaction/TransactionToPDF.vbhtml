@@ -119,21 +119,21 @@
 
         <div class="row row-grid">
             <div class="col1 col-md-3">For commodity:</div>
-            <div class="col2 col-md-6">Hotel Room, From 24.3.2017 To 27.3.2017</div>
+            <div class="col2 col-md-6">@ViewBag.Transaction.Item</div>
         </div>
 
 
 
         <div class="row row-grid">
             <div class="col1 col-md-3">Price:</div>
-            <div class="col2 col-md-5">750</div>
+            <div class="col2 col-md-5">@ViewBag.Transaction.OriginAmount</div>
         </div>
 
 
 
         <div class="row row-grid">
             <div class="col1 col-md-3">Currency:</div>
-            <div class="col2 col-md-4">USD</div>
+            <div class="col2 col-md-4">@ViewBag.Transaction.OriginalCurrencyCode</div>
         </div>
 
         <div class="row row-grid">
