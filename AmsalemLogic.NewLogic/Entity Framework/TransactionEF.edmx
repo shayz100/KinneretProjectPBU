@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="PaidByUsCreditCardTransactionLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CreditCardRecId" Type="bit" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="PaidByUsTransactionId" Type="int" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDateTime" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PaidByUsTransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="OriginAmount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="OriginalCurrencyCode" Type="varchar" MaxLength="3" />
+          <Property Name="BillingAmount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="BillingCurrencyCode" Type="varchar" MaxLength="3" />
+          <Property Name="SupplierAccountNum" Type="nvarchar" MaxLength="20" />
+          <Property Name="SupplierName" Type="nvarchar" MaxLength="60" />
+          <Property Name="BackOfficeCompany" Type="varchar" MaxLength="10" />
+          <Property Name="TripNumber" Type="varchar" MaxLength="20" />
+          <Property Name="Status" Type="int" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDateTime" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDateTime" Type="datetime" />
+          <Property Name="ForWho" Type="nvarchar" MaxLength="60" />
+          <Property Name="Item" Type="nvarchar" MaxLength="60" />
+        </EntityType>
+        <Association Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">
+          <End Role="PaidByUsTransaction" Type="Self.PaidByUsTransaction" Multiplicity="0..1" />
+          <End Role="PaidByUsCreditCardTransactionLog" Type="Self.PaidByUsCreditCardTransactionLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaidByUsTransaction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PaidByUsCreditCardTransactionLog">
+              <PropertyRef Name="PaidByUsTransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="PaidByUsCreditCardTransactionLog" EntityType="Self.PaidByUsCreditCardTransactionLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaidByUsTransaction" EntityType="Self.PaidByUsTransaction" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction" Association="Self.FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">
+            <End Role="PaidByUsTransaction" EntitySet="PaidByUsTransaction" />
+            <End Role="PaidByUsCreditCardTransactionLog" EntitySet="PaidByUsCreditCardTransactionLog" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="PaidByUsCreditCardTransactionLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreditCardRecId" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="PaidByUsTransactionId" Type="Int32" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PaidByUsTransaction" Relationship="Self.FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction" FromRole="PaidByUsCreditCardTransactionLog" ToRole="PaidByUsTransaction" />
+        </EntityType>
+        <EntityType Name="PaidByUsTransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OriginAmount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="OriginalCurrencyCode" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="BillingAmount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="BillingCurrencyCode" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="SupplierAccountNum" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="BackOfficeCompany" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TripNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="ForWho" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Item" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PaidByUsCreditCardTransactionLog" Relationship="Self.FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction" FromRole="PaidByUsTransaction" ToRole="PaidByUsCreditCardTransactionLog" />
+        </EntityType>
+        <Association Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">
+          <End Role="PaidByUsTransaction" Type="Self.PaidByUsTransaction" Multiplicity="0..1" />
+          <End Role="PaidByUsCreditCardTransactionLog" Type="Self.PaidByUsCreditCardTransactionLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaidByUsTransaction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PaidByUsCreditCardTransactionLog">
+              <PropertyRef Name="PaidByUsTransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PaidByUsCreditCardTransactionLog" EntityType="Self.PaidByUsCreditCardTransactionLog" />
+          <EntitySet Name="PaidByUsTransaction" EntityType="Self.PaidByUsTransaction" />
+          <AssociationSet Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction" Association="Self.FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">
+            <End Role="PaidByUsTransaction" EntitySet="PaidByUsTransaction" />
+            <End Role="PaidByUsCreditCardTransactionLog" EntitySet="PaidByUsCreditCardTransactionLog" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="PaidByUsCreditCardTransactionLog">
+            <EntityTypeMapping TypeName="Model.PaidByUsCreditCardTransactionLog">
+              <MappingFragment StoreEntitySet="PaidByUsCreditCardTransactionLog">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="CreditCardRecId" ColumnName="CreditCardRecId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PaidByUsTransactionId" ColumnName="PaidByUsTransactionId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDateTime" ColumnName="ModifiedDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaidByUsTransaction">
+            <EntityTypeMapping TypeName="Model.PaidByUsTransaction">
+              <MappingFragment StoreEntitySet="PaidByUsTransaction">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OriginAmount" ColumnName="OriginAmount" />
+                <ScalarProperty Name="OriginalCurrencyCode" ColumnName="OriginalCurrencyCode" />
+                <ScalarProperty Name="BillingAmount" ColumnName="BillingAmount" />
+                <ScalarProperty Name="BillingCurrencyCode" ColumnName="BillingCurrencyCode" />
+                <ScalarProperty Name="SupplierAccountNum" ColumnName="SupplierAccountNum" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+                <ScalarProperty Name="BackOfficeCompany" ColumnName="BackOfficeCompany" />
+                <ScalarProperty Name="TripNumber" ColumnName="TripNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDateTime" ColumnName="ModifiedDateTime" />
+                <ScalarProperty Name="ForWho" ColumnName="ForWho" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram DiagramId="3725cc0bce5f46a38586d417f8e67799" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.PaidByUsCreditCardTransactionLog" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.PaidByUsTransaction" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

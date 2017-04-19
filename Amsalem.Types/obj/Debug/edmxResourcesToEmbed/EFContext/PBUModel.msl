@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="ELI_AMSALEMCREDITCARD">
+      <EntityTypeMapping TypeName="Model.ELI_AMSALEMCREDITCARD">
+        <MappingFragment StoreEntitySet="ELI_AMSALEMCREDITCARD">
+          <ScalarProperty Name="CreditCardNo" ColumnName="CreditCardNo" />
+          <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+          <ScalarProperty Name="EmplId" ColumnName="EmplId" />
+          <ScalarProperty Name="Cvv" ColumnName="Cvv" />
+          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+          <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+          <ScalarProperty Name="AccountNum" ColumnName="AccountNum" />
+          <ScalarProperty Name="CurrencyCode" ColumnName="CurrencyCode" />
+          <ScalarProperty Name="DataAreaId" ColumnName="DataAreaId" />
+          <ScalarProperty Name="RecVersion" ColumnName="RecVersion" />
+          <ScalarProperty Name="RecId" ColumnName="RecId" />
+          <ScalarProperty Name="AMS_BankNumber" ColumnName="AMS_BankNumber" />
+          <ScalarProperty Name="AMS_EmpGovernmentId" ColumnName="AMS_EmpGovernmentId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreditLine" ColumnName="CreditLine" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

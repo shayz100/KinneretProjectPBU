@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AmsLogic_DBModelStoreContainer" CdmEntityContainer="AmsLogic_DBEntities">
+    <EntitySetMapping Name="PaidByUsCreditCardTransactionLog">
+      <EntityTypeMapping TypeName="AmsLogic_DBModel.PaidByUsCreditCardTransactionLog">
+        <MappingFragment StoreEntitySet="PaidByUsCreditCardTransactionLog">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="CreditCardRecId" ColumnName="CreditCardRecId" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="PaidByUsTransactionId" ColumnName="PaidByUsTransactionId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedDateTime" ColumnName="ModifiedDateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PaidByUsTransaction">
+      <EntityTypeMapping TypeName="AmsLogic_DBModel.PaidByUsTransaction">
+        <MappingFragment StoreEntitySet="PaidByUsTransaction">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="OriginAmount" ColumnName="OriginAmount" />
+          <ScalarProperty Name="OriginalCurrencyCode" ColumnName="OriginalCurrencyCode" />
+          <ScalarProperty Name="BillingAmount" ColumnName="BillingAmount" />
+          <ScalarProperty Name="BillingCurrencyCode" ColumnName="BillingCurrencyCode" />
+          <ScalarProperty Name="SupplierAccountNum" ColumnName="SupplierAccountNum" />
+          <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+          <ScalarProperty Name="BackOfficeCompany" ColumnName="BackOfficeCompany" />
+          <ScalarProperty Name="TripNumber" ColumnName="TripNumber" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedDateTime" ColumnName="ModifiedDateTime" />
+          <ScalarProperty Name="ForWho" ColumnName="ForWho" />
+          <ScalarProperty Name="Item" ColumnName="Item" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

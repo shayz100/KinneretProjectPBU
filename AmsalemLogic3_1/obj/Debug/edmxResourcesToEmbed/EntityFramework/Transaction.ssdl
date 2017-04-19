@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AmsLogic_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="PaidByUsCreditCardTransactionLog">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="CreditCardRecId" Type="bit" />
+    <Property Name="Active" Type="bit" />
+    <Property Name="PaidByUsTransactionId" Type="int" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDateTime" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="ModifiedDateTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="PaidByUsTransaction">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="OriginAmount" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="OriginalCurrencyCode" Type="varchar" MaxLength="3" />
+    <Property Name="BillingAmount" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="BillingCurrencyCode" Type="varchar" MaxLength="3" />
+    <Property Name="SupplierAccountNum" Type="nvarchar" MaxLength="20" />
+    <Property Name="SupplierName" Type="nvarchar" MaxLength="60" />
+    <Property Name="BackOfficeCompany" Type="varchar" MaxLength="10" />
+    <Property Name="TripNumber" Type="varchar" MaxLength="20" />
+    <Property Name="Status" Type="int" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDateTime" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="ModifiedDateTime" Type="datetime" />
+    <Property Name="ForWho" Type="nvarchar" MaxLength="60" />
+    <Property Name="Item" Type="nvarchar" MaxLength="60" />
+  </EntityType>
+  <Association Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">
+    <End Role="PaidByUsTransaction" Type="Self.PaidByUsTransaction" Multiplicity="0..1" />
+    <End Role="PaidByUsCreditCardTransactionLog" Type="Self.PaidByUsCreditCardTransactionLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PaidByUsTransaction">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PaidByUsCreditCardTransactionLog">
+        <PropertyRef Name="PaidByUsTransactionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AmsLogic_DBModelStoreContainer">
+    <EntitySet Name="PaidByUsCreditCardTransactionLog" EntityType="Self.PaidByUsCreditCardTransactionLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaidByUsTransaction" EntityType="Self.PaidByUsTransaction" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction" Association="Self.FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">
+      <End Role="PaidByUsTransaction" EntitySet="PaidByUsTransaction" />
+      <End Role="PaidByUsCreditCardTransactionLog" EntitySet="PaidByUsCreditCardTransactionLog" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
