@@ -5,7 +5,7 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="CreditCardRecId" Type="Boolean" />
+    <Property Name="CreditCardRecId" Type="Int32" />
     <Property Name="Active" Type="Boolean" />
     <Property Name="PaidByUsTransactionId" Type="Int32" />
     <Property Name="CreatedBy" Type="Int32" />
@@ -13,15 +13,15 @@
     <Property Name="ModifiedBy" Type="Int32" />
     <Property Name="ModifiedDateTime" Type="DateTime" Precision="3" />
     <NavigationProperty Name="PaidByUsTransaction" Relationship="Self.FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction" FromRole="PaidByUsCreditCardTransactionLog" ToRole="PaidByUsTransaction" />
+    <Property Name="ImageName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="PaidByUsTransaction">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="OriginAmount" Type="Decimal" Precision="18" Scale="0" />
     <Property Name="OriginalCurrencyCode" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-    <Property Name="BillingAmount" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="BillingAmount" Type="Decimal" Precision="16" Scale="2" />
     <Property Name="BillingCurrencyCode" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
     <Property Name="SupplierAccountNum" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="SupplierName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
@@ -32,9 +32,10 @@
     <Property Name="CreatedDateTime" Type="DateTime" Precision="3" />
     <Property Name="ModifiedBy" Type="Int32" />
     <Property Name="ModifiedDateTime" Type="DateTime" Precision="3" />
-    <Property Name="ForWho" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
     <Property Name="Item" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="PaidByUsCreditCardTransactionLog" Relationship="Self.FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction" FromRole="PaidByUsTransaction" ToRole="PaidByUsCreditCardTransactionLog" />
+    <Property Name="CustomerName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <Property Name="OriginalAmount" Type="Decimal" Precision="16" Scale="2" />
   </EntityType>
   <Association Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">
     <End Role="PaidByUsTransaction" Type="Self.PaidByUsTransaction" Multiplicity="0..1" />

@@ -38,6 +38,8 @@ Namespace Controllers
 
         Function Create(transaction As PaidByUsTransaction) As ActionResult
             Dim handler = New PaidByUsHandler()
+            Dim mockUp = New MockupController()
+            transaction.SupplierAccountNum = mockUp.GetVendorIdByName(transaction.SupplierName)
             Dim user = ClassUsers.GetCurrentUser()
             Dim rop = handler.CreateNewTransaction(transaction, user)
             Return Json(rop)
@@ -48,8 +50,9 @@ Namespace Controllers
             'ViewBag.TransactionId = id
             Dim transaction = New PaidByUsTransaction()
             Dim handler = New PaidByUsHandler()
-            transaction = handler.GetTransaction(4)
+            transaction = handler.GetTransaction(id)
             ViewBag.Transaction = transaction
+            ViewBag.ImageHash = handler.GetTransactionHash(id)
             Return View()
         End Function
 

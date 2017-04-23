@@ -16,49 +16,17 @@ namespace Amsalem.Types.CreditCards
 
         public List<CreditCard> RetrievePaidByUsCreditCardsByManagerClockId(int AgentClockId, bool filterd, string dataAreaID, EBackOfficeType backOffice, bool withVAN = false)
         {
-            string source = "AmsLogic_DBConnectionString";
 
-            List<SqlParameter> SqlParameters = new List<SqlParameter>();
-            string selectStatement = "SELECT LiveInAx FROM AxCompanys_Tbl where AxCompanyName = @dataAreaID";
-            SqlParameters.Add(new SqlParameter("dataAreaID", dataAreaID));
-            var ext = new DataBaseAccess();
-            var LiveInAx = ext.OpenConnectionGetResults(source, selectStatement, SqlParameters.ToArray());
-
-            bool isLive = (from DataRow row in LiveInAx.Rows select (bool)row.ItemArray[0]).FirstOrDefault();
-            bool isTestEnvironemt = (System.Configuration.ConfigurationManager.AppSettings["Environment"].ToUpper() == "TEST");
-            if (!isLive && !isTestEnvironemt)
-            {
-                return new List<CreditCard>();
-            }
-
-            string listManagerBanks = string.Empty;
-            if (filterd)
-            {
-                List<SqlParameter> AmsLogicDBSqlParameters = new List<SqlParameter>();
-                string AmsLogicDBStatement = "SELECT [bankNumber] ";
-                AmsLogicDBStatement += "FROM [AmsLogic_DB].[dbo].[CreditCardBanks] CC ";
-                AmsLogicDBStatement += "where  CC.managerClockId = @AgentClockId ";
-                AmsLogicDBStatement += "or CC.managerClockId in ";
-                AmsLogicDBStatement += "(select ClockIdIs ";
-                AmsLogicDBStatement += "from Relations R,Employee_Account EC ";
-                AmsLogicDBStatement += "where R.RelationTypeNum = 1 AND R.ClockIdIs = ec.AmsalemWorkerClockId ";
-                AmsLogicDBStatement += "and R.ClockIdOf = @AgentClockId) ";
-                AmsLogicDBSqlParameters.Add(new SqlParameter("AgentClockId", AgentClockId));
-
-                var ManagerBanksDB = ext.OpenConnectionGetResults(source, AmsLogicDBStatement, AmsLogicDBSqlParameters.ToArray());
-
-                var ManagerBanks = (from DataRow row in ManagerBanksDB.Rows select row.ItemArray[0]).ToList();
-                listManagerBanks = string.Join(",", ManagerBanks);
-            }
+            string listManagerBanks = "25,26"; //an example - mockup
             string AxDBStatement = ";WITH cte AS(                                                                                    ";
             AxDBStatement += "  SELECT *,ROW_NUMBER() OVER (PARTITION BY CREDITCARDNO ORDER BY RECID asc) AS rn                      ";
             AxDBStatement += "  FROM                                                                                                 ";
-            AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId         ";
+            AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId,status         ";
             AxDBStatement += "  from [ELI_AMSALEMCREDITCARD]                                                                         ";
             AxDBStatement += "  where DATAAREAID = @AxCompany                                                                               ";
             if (!string.IsNullOrEmpty(listManagerBanks))
             {
-                AxDBStatement += "   and AMS_BANKNUMBER in (select value from  [Shared].[dbo].fn_Split(@listManagerBanks,','))           ";
+                AxDBStatement += "   and AMS_BANKNUMBER in ('25','26')           ";
             }
             AxDBStatement += "   ) d)                                                                                                ";
             AxDBStatement += "	 SELECT * from cte                                                                                   ";
@@ -77,6 +45,7 @@ namespace Amsalem.Types.CreditCards
                     toReturn.Add(toAdd);
                 };
             }
+
             return toReturn;
         }
 
@@ -162,7 +131,8 @@ namespace Amsalem.Types.CreditCards
                     toReturn.Add(toAdd);
                 };
             }
-            return toReturn;
+            var cardsList = toReturn.OrderByDescending(x => x.CreditCardExpirationDate).ToList();
+            return cardsList;
         }
     }
 }

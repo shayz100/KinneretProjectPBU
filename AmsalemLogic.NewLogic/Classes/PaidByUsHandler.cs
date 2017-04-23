@@ -23,11 +23,7 @@ namespace AmsalemLogic.NewLogic.Classes
             foreach (var card in cards) //Check if image exists in DB.
             {
 
-                var cardHashName = card.CreditCardInternalIdentifier.Substring(card.CreditCardInternalIdentifier.Length - 4, 4) + 
-                                   card.CreditCardInternalIdentifier.Substring(0, 4) + 
-                                   card.CreditCardExpirationDate.ToString("MMyy");
-                
-                card.ImageExist = handler.IsImageExist(cardHashName);
+                card.ImageExist = handler.IsImageExist(card.ComputeHashForImage());
 
             }
 
@@ -36,30 +32,58 @@ namespace AmsalemLogic.NewLogic.Classes
 
         public ResultOfOperation CreateNewTransaction(PaidByUsTransaction transaction, ClassUsers user)
         {
-
+            var creditcard = new CreditCard();
             var transactionLog = new PaidByUsCreditCardTransactionLog();
             var resultOfOperation = new ResultOfOperation();
-            Entities db = new Entities();
+
             try
             {
-                transaction.Status = (int)Amsalem.Types.Status.Pending;
-                transaction.CreatedBy = user.WorkerClockId;
-                //transaction.Id = -1;
-                transaction.CreatedDateTime = DateTime.Now;
-                db.PaidByUsTransaction.Add(transaction);
-                db.SaveChanges();
+                
+                using (Entities db = new Entities())
+                {
+                    transaction.Status = (int)Amsalem.Types.Status.Pending;
+                    transaction.CreatedBy = user.WorkerClockId;
+                    transaction.CreatedDateTime = DateTime.Now;
+                    db.PaidByUsTransaction.Add(transaction);
 
+                    //Credit Card Operations
+                    creditcard = ApllyGetCardAlgorithmPubic(user.WorkerClockId, transaction);
+                    
+                    transactionLog.ImageName = creditcard.ComputeHashForImage();
+                    transactionLog.Active = true;
+
+
+                    //TransactionLog Initial
+                    transactionLog.PaidByUsTransactionId = transaction.Id;
+
+                    //DB Operations
+                    db.PaidByUsCreditCardTransactionLog.Add(transactionLog);
+                    db.SaveChanges();
+
+                }
                 resultOfOperation.Additional = transaction.Id.ToString();
-                resultOfOperation.Message = "Success";
-                return resultOfOperation;
+                resultOfOperation.Success = true;
+                
 
             }
+
             catch (Exception e)
             {
-                resultOfOperation.Message = "Failed";
+                resultOfOperation.Success = false;
                 resultOfOperation.Additional4 = e.Message;
-                return resultOfOperation;
             }
+
+            return resultOfOperation;
+        }
+
+        public string GetTransactionHash(string idd)
+        {
+            Entities db = new Entities();
+            PaidByUsCreditCardTransactionLog transactionLog = new PaidByUsCreditCardTransactionLog();
+            var id = Convert.ToInt32(idd);
+            transactionLog = db.PaidByUsCreditCardTransactionLog.Where(x => x.PaidByUsTransactionId == id).FirstOrDefault();
+            var result = transactionLog.ImageName;
+            return result;
         }
 
         public PaidByUsTransaction RetrieveTransactionById(int id, bool activeOnly)
@@ -137,12 +161,11 @@ namespace AmsalemLogic.NewLogic.Classes
             return result;
         }
 
-        public PaidByUsTransaction GetTransaction(int id)
+        public PaidByUsTransaction GetTransaction(string id)
         {
             Entities db = new Entities();
             PaidByUsTransaction transaction = new PaidByUsTransaction();
-
-            transaction = db.PaidByUsTransaction.Find(id);
+            transaction = db.PaidByUsTransaction.Find(Convert.ToInt32(id));
             return transaction;
         }
 

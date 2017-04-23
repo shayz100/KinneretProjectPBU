@@ -20,7 +20,7 @@
         }
 
         body {
-            background-color: lightcyan;
+            
         }
 
         .btn {
@@ -53,14 +53,14 @@
         .img-responsive {
             position: absolute;
             right: 0%;
-            top: 50%;
+            top: 70%;
             transform: translate(-50%, -50%);
         }
 
         .topleft {
             position: absolute;
             top: 5%;
-            left: 50%;
+            left: 40%;
             transform: translate(-50%, -50%);
             font-size: 16px;
             color: red;
@@ -82,14 +82,20 @@
 </head>
 <body>
 
-    <div class="container ">
-        <form style="margin-top:40px">
-            <div class="row">
-                <div class="col-md-2 "><button class="btn btn-primary view-pdf">Send PDF</button></div>
-                <div class="col-md-2 "><button2 class="btn btn-primary">Switch Card</button2></div>
-                <div class="col-md-8 "><img src="http://www.amsalem.com/wp-content/uploads/2016/12/logo_268_81.png" class="img-fluid float-xs-right" /></div>
-            </div>
-        </form>
+    <div class="row" style="margin-top:30px">
+        <div class="col-sm-2 "><button class="btn btn-primary view-pdf">Send PDF</button></div>
+        <div class="dropdown col-sm-3">
+            <button id="dLabel" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="btn btn-primary">
+                Switch Card
+                <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu" aria-labelledby="dLabel">
+                <li><a href="#">Cause 1</a></li>
+                <li><a href="#">Cause 2</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-7 "><img src="http://www.amsalem.com/wp-content/uploads/2016/12/logo_268_81.png" class="img-fluid float-xs-right" /></div>
     </div>
 
     <div class="container">
@@ -107,9 +113,10 @@
 
         <div class="row row-grid">
             <div class="col1 col-md-3">For:</div>
-            <div class="col2 col-md-5">@ViewBag.Transaction.ForWho, @ViewBag.Transaction.TripNumber</div>
+            <div class="col2 col-md-9">@ViewBag.Transaction.CustomerName, @ViewBag.Transaction.TripNumber</div>
             <div class="img-responsive">
                 <img src="https://www.bcu.com.au/images/Classic_front-(JUNE).png" class="img float-xs-right" width="350" height="380" />
+                
                 <div class="topleft">pay to @ViewBag.Transaction.SupplierName only</div>
                 <div class="center">@ViewBag.Transaction.TripNumber</div>
             </div>
@@ -126,7 +133,7 @@
 
         <div class="row row-grid">
             <div class="col1 col-md-3">Price:</div>
-            <div class="col2 col-md-5">@ViewBag.Transaction.OriginAmount</div>
+            <div class="col2 col-md-5">@ViewBag.Transaction.OriginalAmount</div>
         </div>
 
 

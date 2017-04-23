@@ -4,23 +4,24 @@
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="CreditCardRecId" Type="bit" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreditCardRecId" Type="int" />
     <Property Name="Active" Type="bit" />
     <Property Name="PaidByUsTransactionId" Type="int" />
     <Property Name="CreatedBy" Type="int" />
     <Property Name="CreatedDateTime" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
     <Property Name="ModifiedDateTime" Type="datetime" />
+    <Property Name="ImageName" Type="varchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="PaidByUsTransaction">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="OriginAmount" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OriginalAmount" Type="decimal" Precision="16" Scale="2" />
     <Property Name="OriginalCurrencyCode" Type="varchar" MaxLength="3" />
-    <Property Name="BillingAmount" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="BillingAmount" Type="decimal" Precision="16" Scale="2" />
     <Property Name="BillingCurrencyCode" Type="varchar" MaxLength="3" />
     <Property Name="SupplierAccountNum" Type="nvarchar" MaxLength="20" />
     <Property Name="SupplierName" Type="nvarchar" MaxLength="60" />
@@ -31,7 +32,7 @@
     <Property Name="CreatedDateTime" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
     <Property Name="ModifiedDateTime" Type="datetime" />
-    <Property Name="ForWho" Type="nvarchar" MaxLength="60" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="60" />
     <Property Name="Item" Type="nvarchar" MaxLength="60" />
   </EntityType>
   <Association Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">

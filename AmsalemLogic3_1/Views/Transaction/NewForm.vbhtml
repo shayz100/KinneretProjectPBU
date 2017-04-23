@@ -19,13 +19,16 @@
 
             $("#Supplier").autocomplete({
 
-                source: availableTags
+                source: availableTags,
+                change: function (event, ui) {
+                    $(this).val((ui.item ? ui.item.label : ""));
+                }
             });
 
             $("#NewTransactionForm").validate({
 
                 rules: {
-                    SupplierAccount: {
+                    SupplierName: {
                         required: true
                     },
 
@@ -46,13 +49,15 @@
                         data: $("#NewTransactionForm").serialize(),
                         type: 'POST',
                         success: function (data) {
-                            if (data.Message == "Success") {
-                                id = 6;
-                                window.location = '/Transaction/Details/' + id;
-                            }
-                            //toastr.error(data.Message);
-                            toastr.error(data.Additional4);
+                            if (data.Success) {
 
+                                window.location = '/Transaction/TransactionToPDF/' + data.Additional;
+                                toastr.success("Transaction " + data.Additional + " Created");
+                            }
+                            else {
+                                toastr.error(Additional4);
+
+                            }
 
                         }
                     });
@@ -77,8 +82,8 @@
 
                 <div class="row form-group">
                     <div class="col-lg-3 col-lg-offset-3">
-                        <label for="OriginAmount">Original Amount</label>
-                        <input class="form-control" name="OriginAmount" type="number" placeholder="Amount">
+                        <label for="OriginalAmount">Original Amount</label>
+                        <input class="form-control" name="OriginalAmount" type="number" placeholder="Amount">
                     </div>
 
                     <div class="form-group col-lg-3">
@@ -108,8 +113,8 @@
                     </div>
 
                     <div Class="col-lg-3">
-                        <Label for="SupplierAccount">Supplier</Label>
-                        <input Class="form-control" name="SupplierAccount" type="text" placeholder="Supplier Name" id="Supplier">
+                        <Label for="SupplierName">Supplier</Label>
+                        <input Class="form-control" name="SupplierName" type="text" placeholder="Supplier Name" id="Supplier">
                     </div>
                 </div>
 
@@ -119,14 +124,18 @@
                         <Label for="TripNumber">Trip Number</Label>
                         <input type="text" Class="form-control" name="TripNumber" placeholder="Trip Number">
                     </div>
+
+                    <div Class="form-group col-lg-3">
+                        <input type="hidden" Class="form-control" name="SupplierAccountNum">
+                    </div>
                 </div>
 
                 <div Class="row form-group">
 
                     <div Class="form-group col-lg-offset-3 col-lg-3">
 
-                        <Label for="ForWho">For</Label>
-                        <input type="text" Class="form-control" name="ForWho" placeholder="Customer Name">
+                        <Label for="CustomerName">For</Label>
+                        <input type="text" Class="form-control" name="CustomerName" placeholder="Customer Name">
 
                     </div>
 

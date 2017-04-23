@@ -15,13 +15,14 @@ namespace AmsalemLogic.NewLogic.Entity_Framework
     public partial class PaidByUsCreditCardTransactionLog
     {
         public int id { get; set; }
-        public Nullable<bool> CreditCardRecId { get; set; }
+        public Nullable<int> CreditCardRecId { get; set; }
         public Nullable<bool> Active { get; set; }
         public Nullable<int> PaidByUsTransactionId { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDateTime { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDateTime { get; set; }
+        public string ImageName { get; set; }
     
         public virtual PaidByUsTransaction PaidByUsTransaction { get; set; }
     }

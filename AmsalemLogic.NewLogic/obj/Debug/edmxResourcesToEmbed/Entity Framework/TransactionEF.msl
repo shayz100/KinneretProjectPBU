@@ -4,6 +4,7 @@
     <EntitySetMapping Name="PaidByUsCreditCardTransactionLog">
       <EntityTypeMapping TypeName="Model.PaidByUsCreditCardTransactionLog">
         <MappingFragment StoreEntitySet="PaidByUsCreditCardTransactionLog">
+          <ScalarProperty Name="ImageName" ColumnName="ImageName" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="CreditCardRecId" ColumnName="CreditCardRecId" />
           <ScalarProperty Name="Active" ColumnName="Active" />
@@ -18,8 +19,9 @@
     <EntitySetMapping Name="PaidByUsTransaction">
       <EntityTypeMapping TypeName="Model.PaidByUsTransaction">
         <MappingFragment StoreEntitySet="PaidByUsTransaction">
+          <ScalarProperty Name="OriginalAmount" ColumnName="OriginalAmount" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="OriginAmount" ColumnName="OriginAmount" />
           <ScalarProperty Name="OriginalCurrencyCode" ColumnName="OriginalCurrencyCode" />
           <ScalarProperty Name="BillingAmount" ColumnName="BillingAmount" />
           <ScalarProperty Name="BillingCurrencyCode" ColumnName="BillingCurrencyCode" />
@@ -32,7 +34,6 @@
           <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
           <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
           <ScalarProperty Name="ModifiedDateTime" ColumnName="ModifiedDateTime" />
-          <ScalarProperty Name="ForWho" ColumnName="ForWho" />
           <ScalarProperty Name="Item" ColumnName="Item" />
         </MappingFragment>
       </EntityTypeMapping>

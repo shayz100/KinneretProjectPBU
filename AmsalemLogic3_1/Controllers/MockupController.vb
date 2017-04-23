@@ -50,6 +50,12 @@ Namespace Controllers
             Return ans
         End Function
 
+        Public Function GetVendorIdByName(vendorName As String) As String
+            Dim List = GetVendors(String.Empty)
+            Dim vendor = List.SingleOrDefault(Function(x) x.Name = vendorName)
+            Return vendor.VendorID
+        End Function
+
         Public Function GetCurrenciesOfAxCompany(AxCompany As String) As List(Of CurrencyItem)
             Dim AllCurrencies = New List(Of CurrencyItem)
             AllCurrencies.Add(New CurrencyItem("ILS", "New israeli shekel"))

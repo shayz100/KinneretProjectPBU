@@ -212,6 +212,7 @@ Public Class ClassUsers
         Dim result = New ClassUsers()
         result.AgentName = "Nitzan"
         result.AgentEmail = ""
+        result.WorkerClockId = 123
         Return result
     End Function
 

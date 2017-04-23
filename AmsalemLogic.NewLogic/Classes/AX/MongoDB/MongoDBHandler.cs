@@ -63,9 +63,9 @@ namespace AmsalemLogic.NewLogic.Classes.Products.ArchiveMongoDB
         public void UploadImage(Image imageToUpload, string imageName)
         {
 
-            var cardHashName =     imageName.Substring(imageName.Length - 8, 4) +
-                                   imageName.Substring(0, 4) +
-                                   imageName.Substring(imageName.Length - 4, 4);
+            var cardHashName = imageName.Substring(0, 4) +
+                               imageName.Substring(imageName.Length - 8, 4) +
+                               imageName.Substring(imageName.Length - 4, 4);
 
             MongoClient client = connection();
             var db = client.GetDatabase("CreditCardIMG");
@@ -98,11 +98,12 @@ namespace AmsalemLogic.NewLogic.Classes.Products.ArchiveMongoDB
         public byte[] ReadImage(string cardNumber)
         {
 
-                var cardHashName = cardNumber.Substring(cardNumber.Length - 8, 4) +
-                                   cardNumber.Substring(0, 4) +
-                                   cardNumber.Substring(cardNumber.Length - 4, 4);
+            //var cardHashName = cardNumber.Substring(0, 4) +
+            //                    cardNumber.Substring(cardNumber.Length - 8, 4) +
+            //                    cardNumber.Substring(cardNumber.Length - 4, 4);
+            var  cardHashName = cardNumber;
 
-                MongoClient client = connection();
+            MongoClient client = connection();
                 var db = client.GetDatabase("CreditCardIMG");
                 var bucket = new GridFSBucket(db);
                 var filter = Builders<GridFSFileInfo>.Filter.And(

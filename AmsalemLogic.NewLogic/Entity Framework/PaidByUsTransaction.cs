@@ -21,7 +21,6 @@ namespace AmsalemLogic.NewLogic.Entity_Framework
         }
     
         public int Id { get; set; }
-        public Nullable<decimal> OriginAmount { get; set; }
         public string OriginalCurrencyCode { get; set; }
         public Nullable<decimal> BillingAmount { get; set; }
         public string BillingCurrencyCode { get; set; }
@@ -34,8 +33,9 @@ namespace AmsalemLogic.NewLogic.Entity_Framework
         public Nullable<System.DateTime> CreatedDateTime { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDateTime { get; set; }
-        public string ForWho { get; set; }
         public string Item { get; set; }
+        public string CustomerName { get; set; }
+        public Nullable<decimal> OriginalAmount { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PaidByUsCreditCardTransactionLog> PaidByUsCreditCardTransactionLog { get; set; }

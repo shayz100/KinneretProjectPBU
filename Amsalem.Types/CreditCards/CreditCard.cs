@@ -19,12 +19,13 @@ namespace Amsalem.Types.CreditCards
         public PaymentMethodCreditCardOwner CreditCardOwner { get; set; }
         public string CustomerID { get; set; }
         public int Status { get; set; }
+        public int CreditCardNo { get; set; }
         public string ContactPersonId { get; set; }
         public string CreditCardType { get; set; }
         public string CreditCardInternalIdentifier { get; set; }
         public string OwnerName { get; set; }
         public string CreditCardIdentifier { get; set; }
-
+        public int RecId { get; set; }
         [DisplayFormat(DataFormatString = @"{0:MM\/yy}")]
         public DateTime CreditCardExpirationDate { get; set; }
         public string CreditCardNote { get; set; }
@@ -58,5 +59,15 @@ namespace Amsalem.Types.CreditCards
             CreditCardOwner = PaymentMethodCreditCardOwner.OurCC;
         }
 
+        public string ComputeHashForImage()
+        {
+            var expirationYear = this.CreditCardExpirationDate.ToString("yy");
+            var expirationMonth = this.CreditCardExpirationDate.ToString("MM");
+            var cardNumber = this.CreditCardInternalIdentifier.ToString();
+            var cardHashName = cardNumber.Substring(cardNumber.Length - 4, 4) +
+                               cardNumber.Substring(0, 4) +
+                               expirationMonth + expirationYear;
+            return cardHashName;
+        }
     }
 }
