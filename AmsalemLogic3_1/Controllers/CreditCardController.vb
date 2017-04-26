@@ -28,11 +28,12 @@ Namespace Controllers
         End Function
 
         Function ShowImage(id As String) As FileContentResult
-
+            Dim Hash = id.Substring(0, 4) +
+                      id.Substring(id.Length - 8, 4) +
+                      id.Substring(id.Length - 4, 4)
             Dim Handler = New MongoDBHandler()
-            Dim byteArrayImage = Handler.ReadImage(id)
+            Dim byteArrayImage = Handler.ReadImage(Hash)
             Return File(byteArrayImage, "image/png")
-
         End Function
 
         <HttpPost()>

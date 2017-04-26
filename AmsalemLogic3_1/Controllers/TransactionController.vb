@@ -47,17 +47,23 @@ Namespace Controllers
         End Function
 
         Function TransactionToPDF(id As String) As ActionResult
-            'ViewBag.TransactionId = id
             Dim transaction = New PaidByUsTransaction()
             Dim handler = New PaidByUsHandler()
             transaction = handler.GetTransaction(id)
             ViewBag.Transaction = transaction
-            ViewBag.ImageHash = handler.GetTransactionHash(id)
+            ViewBag.ImageHash = handler.GetTransactionHash(transaction.Id)
             Return View()
         End Function
 
         Function Switch() As ActionResult
-            'TODO
+            Dim user = ClassUsers.GetCurrentUser()
+            Dim transaction = New PaidByUsTransaction()
+            Dim handler = New PaidByUsHandler()
+            transaction = handler.GetTransaction(6009)
+            Dim ReplacementCause = 1
+            Dim rop = handler.ReplaceCard(transaction, user, ReplacementCause)
+            ViewBag.Transaction = transaction
+            ViewBag.ImageHash = handler.GetTransactionHash(transaction.Id)
             Return View()
 
         End Function

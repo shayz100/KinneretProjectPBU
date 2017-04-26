@@ -7,8 +7,8 @@
 
     <link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-3.1.1.min.js"></script>
-    <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>  
-    <script src="~/Scripts/bootstrap-filestyle.js"></script>  
+    <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+    <script src="~/Scripts/bootstrap-filestyle.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/additional-methods.js"></script>
 
@@ -46,6 +46,7 @@
             var CardNumber = CardNumber.replace(/\r?\n|\r/g, '').trim();
             var CardExpire = CardExpire.replace(/\r?\n|\r/g, '').trim();
             var ConcatString = CardNumber.concat(CardExpire.replace("/", ""))
+
             // Get the modal
             var modal = document.getElementById("ImageModal");
 
@@ -64,7 +65,7 @@
 
         }
 
-        
+
         function uploadFile(elm) {
             var uploadFileName = "";
             var CardNumber = $(elm).closest("tr").find(".card-number").html();
@@ -118,91 +119,91 @@
 
 <body>
 
-        <!-- The Image Modal -->
-        <div id="ImageModal" class="modal" style="z-index:4">
+    <!-- The Image Modal -->
+    <div id="ImageModal" class="modal" style="z-index:4">
 
-            <!-- The Close Button -->
-            <span class="close glyphicon glyphicon-remove blue" onclick="document.getElementById('ImageModal').style.display = 'none'"></span>
+        <!-- The Close Button -->
+        <span class="close glyphicon glyphicon-remove blue" onclick="document.getElementById('ImageModal').style.display = 'none'"></span>
 
-            <!-- Modal Content (The Image) -->
-            <img class="modal-content" id="img01">
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content" id="img01">
 
+    </div>
+
+    <!-- The File Upload Modal -->
+    <div id="myModal1" class="modal1">
+
+        <!-- Modal content -->
+        <div class="modal-content1">
+            <div class="modal-header">
+                <span class="close1 glyphicon glyphicon-remove"></span>
+                <h2>Please Choose *.png File</h2>
+            </div>
+            <div class="modal-body">
+                <form id="uploadForm" action="@Url.Action("UploadImage", "CreditCard")" method="post" enctype="multipart/form-data">
+                    <input type="file" accept=".png" class="filestyle" data-buttonName="btn-primary" name="file">
+                    <input id="fileName" type="hidden" name="fileName" value=""> @*For The File Name Renaming*@
+                    <br>
+                    <input class="submit" type="submit" value="Upload">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <h2>Make Sure The Size Is 200X200</h2>
+            </div>
         </div>
+    </div>
 
-        <!-- The File Upload Modal -->
-        <div id="myModal1" class="modal1">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default panel-table">
+            <div class="panel-body">
+                <table id="myTable" class="table table-striped table-bordered table-list">
+                    <thead>
+                        <tr>
+                            <th>Picture</th>
+                            <th>Credit</th>
+                            <th>Status</th>
+                            <th>Back Office</th>
+                            <th>CompID</th>
+                            <th>No.</th>
+                            <th>Expire</th>
+                            <th>CVV</th>
+                        </tr>
+                    </thead>
 
-            <!-- Modal content -->
-            <div class="modal-content1">
-                <div class="modal-header">
-                    <span class="close1 glyphicon glyphicon-remove"></span>
-                    <h2>Please Choose *.png File</h2>
-                </div>
-           <div class="modal-body">
-               <form id="uploadForm" action="@Url.Action("UploadImage", "CreditCard")" method="post" enctype="multipart/form-data">
-                       <input type="file" accept=".png" class="filestyle" data-buttonName="btn-primary" name="file">
-                       <input id="fileName" type="hidden" name="fileName" value=""> @*For The File Name Renaming*@
-                       <br>
-                       <input class="submit" type="submit" value="Upload">
-               </form>
-           </div>
-           <div class="modal-footer">
-               <h2>Make Sure The Size Is 200X200</h2>
-           </div>
-       </div>
-        </div>
+                    <tbody>
 
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default panel-table">
-                <div class="panel-body">
-                    <table id="myTable" class="table table-striped table-bordered table-list">
-                        <thead>
-                                <tr>
-                                <th>Picture</th>
-                                <th>Credit</th>
-                                <th>Status</th>
-                                <th>Back Office</th>
-                                <th>CompID</th>
-                                <th>No.</th>
-                                <th>Expire</th>
-                                <th>CVV</th>
-                            </tr>
-                        </thead>
 
-                        <tbody>
-                                
-
-                            @For Each item In Model
+                        @For Each item In Model
 
                             @<tr>
 
-                                 <td align="center">
-                                     <div class="dropdown">
-                                         @Select Case item.ImageExist
-                                             Case True
-                                                 @<button onclick="DropdownShow(this)" class="btn btn-default glyphicon glyphicon-picture image-exist-class"></button>
-                                             Case False
-                                                 @<button onclick="DropdownShow(this)" class="btn btn-default glyphicon glyphicon-remove image-exist-class"></button>
+                                <td align="center">
+                                    <div class="dropdown">
+                                        @Select Case item.ImageExist
+                                            Case True
+                                                @<button onclick="DropdownShow(this)" class="btn btn-default glyphicon glyphicon-picture image-exist-class"></button>
+                                            Case False
+                                                @<button onclick="DropdownShow(this)" class="btn btn-default glyphicon glyphicon-remove image-exist-class"></button>
 
-                                         End Select
-                                         <div class="dropdown-content">
-                                             <a onclick="showCardImage(this)">Show</a>
-                                             <a onclick="uploadFile(this)">Edit</a>
-                                         </div>
-                                     </div>
-                                 </td>
+                                        End Select
+                                        <div class="dropdown-content">
+                                            <a onclick="showCardImage(this)">Show</a>
+                                            <a onclick="uploadFile(this)">Edit</a>
+                                        </div>
+                                    </div>
+                                </td>
 
-                                <td align = "center" >
+                                <td align="center">
                                     <a class="btn btn-default"><span class="glyphicon glyphicon-usd"></span></a>
-                                                                                                                                                                                                                                                                                                                </td>
+                                </td>
 
                                 <td>
 
                                     @Select Case item.Status
                                         Case 0
-                                    @<b style="color:red">Cancelled</b>
+                                            @<b style="color:red">Cancelled</b>
                                         Case 1
-                                    @<b style="color:green">OK</b>
+                                            @<b style="color:green">OK</b>
 
                                     End Select
 
@@ -220,9 +221,9 @@
                                     @Html.DisplayFor(Function(modelItem) item.CreditCardInternalIdentifier)
                                 </td>
 
-                                 <td class="card-date">
-                                     @Html.DisplayFor(Function(modelItem) item.CreditCardExpirationDate)
-                                 </td>
+                                <td class="card-date">
+                                    @Html.DisplayFor(Function(modelItem) item.CreditCardExpirationDate)
+                                </td>
 
                                 <td>
                                     @Html.DisplayFor(Function(modelItem) item.CreditCardIdentifier)
@@ -230,13 +231,12 @@
 
                             </tr>
 
-                            Next
+                        Next
 
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 </body>
-         </html>
-
+</html>

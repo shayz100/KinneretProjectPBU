@@ -69,5 +69,10 @@ namespace Amsalem.Types
         Payed = 1,
         Cancelled = 2
     }
+    public enum ReplacementCause
+    {
+        InvalidCreditCompany = 0,
+        InvalidCard = 1
+    }
 
 }

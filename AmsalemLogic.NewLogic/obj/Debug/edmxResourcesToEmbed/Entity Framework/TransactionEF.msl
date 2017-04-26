@@ -4,6 +4,7 @@
     <EntitySetMapping Name="PaidByUsCreditCardTransactionLog">
       <EntityTypeMapping TypeName="Model.PaidByUsCreditCardTransactionLog">
         <MappingFragment StoreEntitySet="PaidByUsCreditCardTransactionLog">
+          <ScalarProperty Name="ReplacementCause" ColumnName="ReplacementCause" />
           <ScalarProperty Name="ImageName" ColumnName="ImageName" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="CreditCardRecId" ColumnName="CreditCardRecId" />

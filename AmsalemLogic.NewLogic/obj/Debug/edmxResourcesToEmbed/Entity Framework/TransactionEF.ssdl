@@ -13,6 +13,7 @@
     <Property Name="ModifiedBy" Type="int" />
     <Property Name="ModifiedDateTime" Type="datetime" />
     <Property Name="ImageName" Type="varchar" MaxLength="20" />
+    <Property Name="ReplacementCause" Type="int" />
   </EntityType>
   <EntityType Name="PaidByUsTransaction">
     <Key>

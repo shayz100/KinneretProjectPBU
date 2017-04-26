@@ -49,8 +49,8 @@ namespace AmsalemLogic.NewLogic.Classes.Products.ArchiveMongoDB
                 if (fileInfo == null)
                     return false;
                 else
-                    return true;     
-                     
+                    return true;
+
             }
         }
 
@@ -73,7 +73,7 @@ namespace AmsalemLogic.NewLogic.Classes.Products.ArchiveMongoDB
             Image img = imageToUpload;
             byte[] source = ImageToByteArray(img);
 
-            if(IsImageExist(cardHashName))
+            if (IsImageExist(cardHashName))
             {
                 var filter = Builders<GridFSFileInfo>.Filter.And(
                 Builders<GridFSFileInfo>.Filter.Eq(x => x.Filename, cardHashName));
@@ -98,36 +98,31 @@ namespace AmsalemLogic.NewLogic.Classes.Products.ArchiveMongoDB
         public byte[] ReadImage(string cardNumber)
         {
 
-            //var cardHashName = cardNumber.Substring(0, 4) +
-            //                    cardNumber.Substring(cardNumber.Length - 8, 4) +
-            //                    cardNumber.Substring(cardNumber.Length - 4, 4);
-            var  cardHashName = cardNumber;
-
             MongoClient client = connection();
-                var db = client.GetDatabase("CreditCardIMG");
-                var bucket = new GridFSBucket(db);
-                var filter = Builders<GridFSFileInfo>.Filter.And(
-                    Builders<GridFSFileInfo>.Filter.Eq(x => x.Filename, cardHashName));
-                var options = new GridFSFindOptions
+            var db = client.GetDatabase("CreditCardIMG");
+            var bucket = new GridFSBucket(db);
+            var filter = Builders<GridFSFileInfo>.Filter.And(
+                Builders<GridFSFileInfo>.Filter.Eq(x => x.Filename, cardNumber));
+            var options = new GridFSFindOptions
+            {
+                Limit = 1
+            };
+            using (var cursor = bucket.Find(filter, options))
+            {
+                var fileInfo = cursor.ToList().FirstOrDefault();
+                if (fileInfo == null)
                 {
-                    Limit = 1
-                };
-                using (var cursor = bucket.Find(filter, options))
-                {
-                    var fileInfo = cursor.ToList().FirstOrDefault();
-                    if (fileInfo == null)
-                    {
-                        return ReadImage("000000000000"); //Image Not Available.
-                    }
-                    else
-                    {
-                        var imageToReturn = bucket.DownloadAsBytes(fileInfo.Id);
-                        return imageToReturn;
-                    }
+                    return ReadImage("000000000000"); //Image Not Available.
                 }
+                else
+                {
+                    var imageToReturn = bucket.DownloadAsBytes(fileInfo.Id);
+                    return imageToReturn;
+                }
+            }
 
 
-        }  
+        }
 
     }
 

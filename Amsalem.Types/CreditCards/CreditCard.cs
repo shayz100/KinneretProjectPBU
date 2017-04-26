@@ -25,7 +25,7 @@ namespace Amsalem.Types.CreditCards
         public string CreditCardInternalIdentifier { get; set; }
         public string OwnerName { get; set; }
         public string CreditCardIdentifier { get; set; }
-        public int RecId { get; set; }
+        public long RecId { get; set; }
         [DisplayFormat(DataFormatString = @"{0:MM\/yy}")]
         public DateTime CreditCardExpirationDate { get; set; }
         public string CreditCardNote { get; set; }
@@ -64,8 +64,8 @@ namespace Amsalem.Types.CreditCards
             var expirationYear = this.CreditCardExpirationDate.ToString("yy");
             var expirationMonth = this.CreditCardExpirationDate.ToString("MM");
             var cardNumber = this.CreditCardInternalIdentifier.ToString();
-            var cardHashName = cardNumber.Substring(cardNumber.Length - 4, 4) +
-                               cardNumber.Substring(0, 4) +
+            var cardHashName = cardNumber.Substring(0, 4) +
+                               cardNumber.Substring(cardNumber.Length - 4, 4) +
                                expirationMonth + expirationYear;
             return cardHashName;
         }

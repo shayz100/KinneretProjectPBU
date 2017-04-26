@@ -87,6 +87,7 @@ namespace Amsalem.Types.CreditCards
             toAdd.CreditCardNumber = row.Field<string>("CREDITCARDNO");
             toAdd.CreditCardType = row.Field<string>("COMPANYID");
             toAdd.Status = row.Field<int>("STATUS");
+            toAdd.RecId = row.Field<long>("RECID");
 
             if (toAdd.CreditCardType != null && toAdd.CreditCardType.Length > 2)
             {

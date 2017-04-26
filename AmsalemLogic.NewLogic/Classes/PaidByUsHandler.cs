@@ -12,7 +12,7 @@ using AmsalemLogic.NewLogic.Entity_Framework;
 
 namespace AmsalemLogic.NewLogic.Classes
 {
-   public class PaidByUsHandler
+    public class PaidByUsHandler
     {
         public List<CreditCard> GetAllCards()
         {
@@ -38,7 +38,7 @@ namespace AmsalemLogic.NewLogic.Classes
 
             try
             {
-                
+
                 using (Entities db = new Entities())
                 {
                     transaction.Status = (int)Amsalem.Types.Status.Pending;
@@ -47,15 +47,15 @@ namespace AmsalemLogic.NewLogic.Classes
                     db.PaidByUsTransaction.Add(transaction);
 
                     //Credit Card Operations
-                    creditcard = ApllyGetCardAlgorithmPubic(user.WorkerClockId, transaction);
-                    
+                    creditcard = ApllyGetCardAlgorithm(user.WorkerClockId, transaction);
+
                     transactionLog.ImageName = creditcard.ComputeHashForImage();
                     transactionLog.Active = true;
 
 
                     //TransactionLog Initial
                     transactionLog.PaidByUsTransactionId = transaction.Id;
-
+                    transactionLog.CreditCardRecId = creditcard.RecId;
                     //DB Operations
                     db.PaidByUsCreditCardTransactionLog.Add(transactionLog);
                     db.SaveChanges();
@@ -63,7 +63,7 @@ namespace AmsalemLogic.NewLogic.Classes
                 }
                 resultOfOperation.Additional = transaction.Id.ToString();
                 resultOfOperation.Success = true;
-                
+
 
             }
 
@@ -76,49 +76,111 @@ namespace AmsalemLogic.NewLogic.Classes
             return resultOfOperation;
         }
 
-        public string GetTransactionHash(string idd)
+        public string GetTransactionHash(string id)
         {
-            Entities db = new Entities();
-            PaidByUsCreditCardTransactionLog transactionLog = new PaidByUsCreditCardTransactionLog();
-            var id = Convert.ToInt32(idd);
-            transactionLog = db.PaidByUsCreditCardTransactionLog.Where(x => x.PaidByUsTransactionId == id).FirstOrDefault();
-            var result = transactionLog.ImageName;
-            return result;
+            var db = new Entities();
+            var intId = Convert.ToInt32(id);
+            var transactionLog = new PaidByUsCreditCardTransactionLog();
+            transactionLog = db
+                               .PaidByUsCreditCardTransactionLog
+                               .Where(x => x.PaidByUsTransactionId == intId && x.Active == true)
+                               .FirstOrDefault();
+            return transactionLog.ImageName;
         }
 
         public PaidByUsTransaction RetrieveTransactionById(int id, bool activeOnly)
         {
             //TODO
-            var pbut = new PaidByUsTransaction();
-            return pbut;
+            var paidByUsTransaction = new PaidByUsTransaction();
+            return paidByUsTransaction;
 
         }
 
-        //orena - the function to use
-        //public void CreateNewTransaction(PaidByUsTransaction transaction, ClassUsers user)
-        //{
-        //    var userClokId = user.WorkerClockId;
+        public ResultOfOperation ReplaceCard(PaidByUsTransaction transaction, ClassUsers user, int replacementCause)
+        {
 
-        //    var card = this.ApllyGetCardAlgorithm(userClokId, transaction);
+            var creditcard = new CreditCard();
+            var transactionLog = new PaidByUsCreditCardTransactionLog();
+            var resultOfOperation = new ResultOfOperation();
+            try
+            {
+                using (Entities db = new Entities())
+                {
+                    var lasttransactionLog = db.PaidByUsCreditCardTransactionLog.OrderByDescending(x => x.PaidByUsTransactionId == transaction.Id && x.Active == true).FirstOrDefault();
+                    lasttransactionLog.Active = false;
+                    lasttransactionLog.ReplacementCause = replacementCause;
+                    db.SaveChanges();
 
-        //    if (NewTransaction == true) // if is a new Transaction that not in the DB table.PaidByUsTransaction
-        //    {
-        //        SaveToPaidByUsTransaction();  // save to DB table.PaidByUsTransaction
-        //    }
-        //}
+                    creditcard = ApllyGetCardAlgorithm(user.WorkerClockId, transaction);
+                    transactionLog.ImageName = creditcard.ComputeHashForImage();
+                    transactionLog.Active = true;
+                    transactionLog.PaidByUsTransactionId = transaction.Id;
+                    transactionLog.CreditCardRecId = creditcard.RecId;
+                    //DB Operations
+                    db.PaidByUsCreditCardTransactionLog.Add(transactionLog);
+                    db.SaveChanges();
+                }
+
+                resultOfOperation.Additional = transaction.Id.ToString();
+                resultOfOperation.Success = true;
+            }
+            catch (Exception e)
+            {
+                resultOfOperation.Success = false;
+                resultOfOperation.Additional4 = e.Message;
+            }
+            return resultOfOperation;
 
 
+        }
         public CreditCard ApllyGetCardAlgorithmPubic(int userClockId, PaidByUsTransaction transaction)
         {
             return ApllyGetCardAlgorithm(userClockId, transaction);
         }
         private CreditCard ApllyGetCardAlgorithm(int userClockId, PaidByUsTransaction transaction)
         {
+
+            var retriever = new AXRertrieveCreditCards();
+            var cards = retriever.RetrievePaidByUsCreditCardsByManagerClockId(userClockId, false, "AMSA", Amsalem.Types.EBackOfficeType.AX);
             CreditCard result = null;
             try
             {
-                var retriever = new AXRertrieveCreditCards();
-                var cards = retriever.RetrievePaidByUsCreditCardsByManagerClockId(userClockId, false, "AMSA", Amsalem.Types.EBackOfficeType.AX);
+                if (transaction.Id > 1)
+                {
+                    using (Entities db = new Entities())
+                    {
+
+                        var transactionLog = db.PaidByUsCreditCardTransactionLog.OrderByDescending(x => x.PaidByUsTransactionId == transaction.Id).FirstOrDefault(); // take the last save card for that transaction
+
+                        var cause = transactionLog.ReplacementCause;
+                        List<PaidByUsCreditCardTransactionLog> list = new List<PaidByUsCreditCardTransactionLog>();
+                        List<CreditCard> dfaultcards = null;
+
+                        if (cause == 0) // if Invalid Credit Company
+                        {
+                            var card = cards.Where(x => x.RecId == transactionLog.CreditCardRecId).FirstOrDefault();
+                            cards.RemoveAll(x => x.CreditCardType == card.CreditCardType);
+                            if (cards.Count == 0)
+                            {
+                                dfaultcards = GetDefaultCard();
+                                cards = RemoveInvalidCard(transaction, dfaultcards);
+                            }
+                        }
+                        else if (cause == 1) // if Invalid Card
+                        {
+                            cards = RemoveInvalidCard(transaction, cards);
+
+                            if (cards.Count == 0)
+                            {
+                                dfaultcards = GetDefaultCard();
+                                cards = RemoveInvalidCard(transaction, dfaultcards);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                }
 
                 var Euro = transaction.OriginalCurrencyCode == "EUR";
                 if (Euro)
@@ -127,6 +189,17 @@ namespace AmsalemLogic.NewLogic.Classes
                     if (result == null)
                     {
                         result = cards.Where(x => x.CreditCardType == "AX").FirstOrDefault();
+                    }
+
+                    if (result == null)
+                    {
+                        result = cards.Where(x => x.CreditCardType == "DI").FirstOrDefault();
+                    }
+
+
+                    if (result == null)
+                    {
+                        result = cards.Where(x => x.CreditCardType == "VI").FirstOrDefault();
                     }
                 }
                 else
@@ -137,27 +210,48 @@ namespace AmsalemLogic.NewLogic.Classes
                         result = cards.Where(x => x.CreditCardType == "VI").FirstOrDefault();
                     }
                 }
-                if (result == null)
-                {
-                    result = this.GetDefaultCard(Euro);
-                }
+
             }
+
             catch (Exception ex)
             {
                 throw;
             }
 
+
             return result;
         }
 
-        private CreditCard GetDefaultCard(bool euro)
+        private List<CreditCard> GetDefaultCard()
         {
-            CreditCard result = null;
-            if (euro)
+            var retriever = new AXRertrieveCreditCards();
+            var result = retriever.GetAllPaidByUsCreditCards();
+
+            return result;
+        }
+
+        private List<CreditCard> RemoveInvalidCard(PaidByUsTransaction transaction, List<CreditCard> cards)
+        {
+            List<CreditCard> result = null;
+
+            using (Entities db = new Entities())
             {
+                var transactionLogInvalidCard = from x in db.PaidByUsCreditCardTransactionLog
+                                                where x.PaidByUsTransactionId.Value == transaction.Id
+                                                select x.CreditCardRecId;
+
+                foreach (var y in transactionLogInvalidCard)
+                {
+                    foreach (CreditCard card in cards.ToList())
+                    {
+                        if (card.RecId == y)
+                        {
+                            cards.Remove(card);
+                        }
+                    }
+                }
+                result = cards;
             }
-            else
-            { }
             return result;
         }
 
@@ -169,6 +263,6 @@ namespace AmsalemLogic.NewLogic.Classes
             return transaction;
         }
 
-        
+
     }
 }

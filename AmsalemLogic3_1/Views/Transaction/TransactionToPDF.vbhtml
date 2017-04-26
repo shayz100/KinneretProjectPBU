@@ -1,6 +1,4 @@
-﻿
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -12,6 +10,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#button1").click(function () {
+                $.ajax({
+                    url: '/Transaction/SendToEmail',
+                    data: $("#NewTransactionForm").serialize(),
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.Success) {
+
+                        }
+                        else {
+                            toastr.error();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
     <style>
         .abc {
@@ -20,7 +38,6 @@
         }
 
         body {
-            
         }
 
         .btn {
@@ -38,22 +55,20 @@
 
         .col1 {
             font-family: 'Times New Roman', Times, serif;
-            font-size: large;
             color: black;
-            font-size: 28px;
+            font-size: 24px;
         }
 
         .col2 {
             font-family: 'Times New Roman', Times, serif;
-            font-size: large;
-            color: red;
-            font-size: 28px;
+            color: darkslateblue;
+            font-size: 24px;
         }
 
         .img-responsive {
             position: absolute;
             right: 0%;
-            top: 70%;
+            top: 50%;
             transform: translate(-50%, -50%);
         }
 
@@ -103,20 +118,20 @@
             <div class="center-block">Transaction Details</div>
         </div>
         <div class="row row-grid">
-            <div class="col1 col-md-3">To:</div>
-            <div class="col2 col-md-5">@ViewBag.Transaction.SupplierName</div>
+            <div class="col1 col-sm-3">To:</div>
+            <div class="col2 col-sm-5">@ViewBag.Transaction.SupplierName</div>
         </div>
 
         <div class="row row-grid">
-            <div class="col1 col-md-8">We authorize credit card billing with the following details:</div>
+            <div class="col1 col-sm-6">authorizing billing with the following details:</div>
         </div>
 
         <div class="row row-grid">
-            <div class="col1 col-md-3">For:</div>
-            <div class="col2 col-md-9">@ViewBag.Transaction.CustomerName, @ViewBag.Transaction.TripNumber</div>
+            <div class="col1 col-sm-3">For:</div>
+            <div class="col2 col-sm-9">@ViewBag.Transaction.CustomerName, @ViewBag.Transaction.TripNumber</div>
             <div class="img-responsive">
-                <img src="https://www.bcu.com.au/images/Classic_front-(JUNE).png" class="img float-xs-right" width="350" height="380" />
-                
+                <img src='@(Url.Action("ShowImage", "CreditCard", New With {.id = ViewBag.ImageHash}))' Class="img float-xs-right" width="350" height="380" id="creditCardImage" />
+
                 <div class="topleft">pay to @ViewBag.Transaction.SupplierName only</div>
                 <div class="center">@ViewBag.Transaction.TripNumber</div>
             </div>
@@ -125,33 +140,35 @@
 
 
         <div class="row row-grid">
-            <div class="col1 col-md-3">For commodity:</div>
-            <div class="col2 col-md-6">@ViewBag.Transaction.Item</div>
+            <div class="col1 col-sm-3">For commodity:</div>
+            <div class="col2 col-sm-6">@ViewBag.Transaction.Item</div>
         </div>
 
 
 
         <div class="row row-grid">
-            <div class="col1 col-md-3">Price:</div>
-            <div class="col2 col-md-5">@ViewBag.Transaction.OriginalAmount</div>
+            <div class="col1 col-sm-3">Price:</div>
+            <div class="col2 col-sm-5">@ViewBag.Transaction.OriginalAmount</div>
         </div>
 
 
 
         <div class="row row-grid">
-            <div class="col1 col-md-3">Currency:</div>
-            <div class="col2 col-md-4">@ViewBag.Transaction.OriginalCurrencyCode</div>
+            <div class="col1 col-sm-3">Currency:</div>
+            <div class="col2 col-sm-4">@ViewBag.Transaction.OriginalCurrencyCode</div>
         </div>
 
         <div class="row row-grid">
-            <div class="col1 col-md-3">Issued by:</div>
-            <div class="col2 col-md-3">Orgad M</div>
+            <div class="col1 col-sm-3">Issued by:</div>
+            <div class="col2 col-sm-3">Orgad M</div>
         </div>
 
     </div>
 
 </body>
 </html>
+
+
 
 
 
