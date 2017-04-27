@@ -61,8 +61,8 @@ namespace Amsalem.Types.CreditCards
             AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId, status ";
             AxDBStatement += "  from [ELI_AMSALEMCREDITCARD]                                                                                     ";
             AxDBStatement += "  where DATAAREAID = @AxCompany                                                                                    ";
-            AxDBStatement += "   and CREDITCARDNO = @CardNumber) ";
-
+            AxDBStatement += "   and CREDITCARDNO = @CardNumber) d) ";
+            AxDBStatement += "  select * FROM cte where rn=1        ";
             List<SqlParameter> AxDBSqlParameters = new List<SqlParameter>();
             AxDBSqlParameters.Add(new SqlParameter("CardNumber", CreditCardNumber));
 
@@ -87,10 +87,12 @@ namespace Amsalem.Types.CreditCards
             AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId, status ";
             AxDBStatement += "  from [ELI_AMSALEMCREDITCARD]                                                                                     ";
             AxDBStatement += "  where DATAAREAID = @AxCompany                                                                                    ";
-            AxDBStatement += "   and RECID = @RECID) ";
+            AxDBStatement += "  and RECID = @RECID) ";
+            AxDBStatement += "  d) ";
+            AxDBStatement += "  select * FROM cte where rn=1        ";
 
             List<SqlParameter> AxDBSqlParameters = new List<SqlParameter>();
-            AxDBSqlParameters.Add(new SqlParameter("CardNumber", recId));
+            AxDBSqlParameters.Add(new SqlParameter("RECID", recId));
 
             var AxDBresults = DataBaseAccess.PerformQueryToCompany(false, AxDBStatement, AxDBSqlParameters, dataAreaID);
             CreditCard toReturn = null;

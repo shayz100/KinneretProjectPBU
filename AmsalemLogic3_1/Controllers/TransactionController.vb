@@ -55,12 +55,12 @@ Namespace Controllers
             Return View()
         End Function
 
-        Function Switch(transId As Integer, cause As Integer) As ActionResult
+        Function SwitchCard(Id As Integer, Id2 As Integer) As ActionResult
             Dim user = ClassUsers.GetCurrentUser()
             Dim transaction = New PaidByUsTransaction()
             Dim handler = New PaidByUsHandler()
-            transaction = handler.GetTransaction(transId)
-            Dim rop = handler.ReplaceCard(transaction, user, cause)
+            transaction = handler.GetTransaction(Id)
+            Dim rop = handler.ReplaceCard(transaction, user, Id2)
             ViewBag.Transaction = transaction
             ViewBag.ImageHash = handler.GetTransactionHash(transaction)
             Return View()

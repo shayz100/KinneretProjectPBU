@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shay & Nitzan Project</title>
     @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>

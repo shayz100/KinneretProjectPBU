@@ -2,29 +2,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
     <title>Bootstrap Website</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
 
             $("#button1").click(function () {
-                debugger;
+                alert("cliekced");
                 $.ajax({
                     url: '/Transaction/SwitchCard',
-                    data: {transId: transaction.id, cause: 0},
-                type: 'POST',
-                success: function (data) {
+                    data: {"Id": transaction.id, "Id2": 0},
+                    type: 'POST',
+                    success: function (data) {
 
-            }
+                    }
                 });
             });
+
+            $("#button2").click(function () {
+                $.ajax({
+                    url: '/Transaction/SwitchCard',
+                    data: { transId: transaction.id, cause: 1 },
+                    type: 'POST',
+                    success: function (data) {
+
+                    }
+                });
+            });
+
         });
     </script>
 
@@ -104,7 +112,7 @@
 
             <ul class="dropdown-menu" aria-labelledby="dLabel">
                 <li><a id="button1" href="#">Cause 1</a></li>
-                <li><a href="#">Cause 2</a></li>
+                <li><a id="button2" href="#">Cause 2</a></li>
             </ul>
         </div>
         <div class="col-sm-7 "><img src="http://www.amsalem.com/wp-content/uploads/2016/12/logo_268_81.png" class="img-fluid float-xs-right" /></div>
