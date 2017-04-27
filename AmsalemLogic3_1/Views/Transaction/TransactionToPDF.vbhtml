@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@Modeltype AmsalemLogic.NewLogic.Entity_Framework.PaidByUsTransaction
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -14,18 +15,14 @@
         $(document).ready(function () {
 
             $("#button1").click(function () {
+                debugger;
                 $.ajax({
-                    url: '/Transaction/SendToEmail',
-                    data: $("#NewTransactionForm").serialize(),
-                    type: 'POST',
-                    success: function (data) {
-                        if (data.Success) {
+                    url: '/Transaction/SwitchCard',
+                    data: {transId: transaction.id, cause: 0},
+                type: 'POST',
+                success: function (data) {
 
-                        }
-                        else {
-                            toastr.error();
-                        }
-                    }
+            }
                 });
             });
         });
@@ -68,7 +65,7 @@
         .img-responsive {
             position: absolute;
             right: 0%;
-            top: 50%;
+            top: 70%;
             transform: translate(-50%, -50%);
         }
 
@@ -106,7 +103,7 @@
             </button>
 
             <ul class="dropdown-menu" aria-labelledby="dLabel">
-                <li><a href="#">Cause 1</a></li>
+                <li><a id="button1" href="#">Cause 1</a></li>
                 <li><a href="#">Cause 2</a></li>
             </ul>
         </div>

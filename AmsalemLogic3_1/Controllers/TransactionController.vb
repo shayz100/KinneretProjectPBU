@@ -51,25 +51,25 @@ Namespace Controllers
             Dim handler = New PaidByUsHandler()
             transaction = handler.GetTransaction(id)
             ViewBag.Transaction = transaction
-            ViewBag.ImageHash = handler.GetTransactionHash(transaction.Id)
+            ViewBag.ImageHash = handler.GetTransactionHash(transaction)
             Return View()
         End Function
 
-        Function Switch() As ActionResult
+        Function Switch(transId As Integer, cause As Integer) As ActionResult
             Dim user = ClassUsers.GetCurrentUser()
             Dim transaction = New PaidByUsTransaction()
             Dim handler = New PaidByUsHandler()
-            transaction = handler.GetTransaction(6009)
-            Dim ReplacementCause = 1
-            Dim rop = handler.ReplaceCard(transaction, user, ReplacementCause)
+            transaction = handler.GetTransaction(transId)
+            Dim rop = handler.ReplaceCard(transaction, user, cause)
             ViewBag.Transaction = transaction
-            ViewBag.ImageHash = handler.GetTransactionHash(transaction.Id)
+            ViewBag.ImageHash = handler.GetTransactionHash(transaction)
             Return View()
 
         End Function
 
-        Function SendToEmail() As ActionResult
+        Function SendToEmail(transId As Integer) As ActionResult
             'TODO
+            'Get transaction by id
             Return View()
 
         End Function

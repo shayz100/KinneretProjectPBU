@@ -5,7 +5,7 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CreditCardRecId" Type="int" />
+    <Property Name="CreditCardRecId" Type="bigint" />
     <Property Name="Active" Type="bit" />
     <Property Name="PaidByUsTransactionId" Type="int" />
     <Property Name="CreatedBy" Type="int" />

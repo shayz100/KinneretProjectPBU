@@ -76,15 +76,18 @@ namespace AmsalemLogic.NewLogic.Classes
             return resultOfOperation;
         }
 
-        public string GetTransactionHash(string id)
+        public string GetTransactionHash(PaidByUsTransaction transaction)
         {
-            var db = new Entities();
-            var intId = Convert.ToInt32(id);
-            var transactionLog = new PaidByUsCreditCardTransactionLog();
-            transactionLog = db
-                               .PaidByUsCreditCardTransactionLog
-                               .Where(x => x.PaidByUsTransactionId == intId && x.Active == true)
-                               .FirstOrDefault();
+
+            
+            var transactionLog = transaction.PaidByUsCreditCardTransactionLog.FirstOrDefault(x => x.Active.Value);
+            var cardRecId = transactionLog.CreditCardRecId;
+
+            var retriever = new AXRertrieveCreditCards();
+            var cards = retriever.RetrievePaidByUsSingleCreditCardByRecId(cardRecId.Value, transaction.BackOfficeCompany, EBackOfficeType.AX);
+
+
+
             return transactionLog.ImageName;
         }
 
@@ -96,42 +99,55 @@ namespace AmsalemLogic.NewLogic.Classes
 
         }
 
-        public ResultOfOperation ReplaceCard(PaidByUsTransaction transaction, ClassUsers user, int replacementCause)
+        public ResultOfOperation ReplaceCard(PaidByUsTransaction transaction, ClassUsers user, int cause)
         {
 
             var creditcard = new CreditCard();
             var transactionLog = new PaidByUsCreditCardTransactionLog();
             var resultOfOperation = new ResultOfOperation();
-            try
+            var activeLog = transaction.PaidByUsCreditCardTransactionLog.FirstOrDefault(x => x.Active.Value);
+            
+            if (activeLog == null)
             {
-                using (Entities db = new Entities())
-                {
-                    var lasttransactionLog = db.PaidByUsCreditCardTransactionLog.OrderByDescending(x => x.PaidByUsTransactionId == transaction.Id && x.Active == true).FirstOrDefault();
-                    lasttransactionLog.Active = false;
-                    lasttransactionLog.ReplacementCause = replacementCause;
-                    db.SaveChanges();
-
-                    creditcard = ApllyGetCardAlgorithm(user.WorkerClockId, transaction);
-                    transactionLog.ImageName = creditcard.ComputeHashForImage();
-                    transactionLog.Active = true;
-                    transactionLog.PaidByUsTransactionId = transaction.Id;
-                    transactionLog.CreditCardRecId = creditcard.RecId;
-                    //DB Operations
-                    db.PaidByUsCreditCardTransactionLog.Add(transactionLog);
-                    db.SaveChanges();
-                }
-
-                resultOfOperation.Additional = transaction.Id.ToString();
-                resultOfOperation.Success = true;
+                resultOfOperation.Message = "ActiveLog Not found";
             }
-            catch (Exception e)
+            else
             {
-                resultOfOperation.Success = false;
-                resultOfOperation.Additional4 = e.Message;
+                activeLog.ReplacementCause = cause;
+                try
+                {
+                    using (Entities db = new Entities())
+                    {
+                        var lasttransactionLog = db.PaidByUsCreditCardTransactionLog.FirstOrDefault(x => x.id == activeLog.id);
+                        if (lasttransactionLog == null)
+                        {
+                            resultOfOperation.Message = "Active Log Not found in DB: " + activeLog.id;
+                        }
+                        else
+                        {
+                            lasttransactionLog.Active = false;
+                            lasttransactionLog.ReplacementCause = cause;
+                            creditcard = ApllyGetCardAlgorithm(user.WorkerClockId, transaction);
+                            transactionLog.ImageName = creditcard.ComputeHashForImage();
+                            transactionLog.Active = true;
+                            transactionLog.PaidByUsTransactionId = transaction.Id;
+                            transactionLog.CreditCardRecId = creditcard.RecId;
+                            //DB Operations
+                            db.PaidByUsCreditCardTransactionLog.Add(transactionLog);
+                            db.SaveChanges();
+
+                            resultOfOperation.Additional = transaction.Id.ToString();
+                            resultOfOperation.Success = true;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    resultOfOperation.Success = false;
+                    resultOfOperation.Message = e.Message;
+                }
             }
             return resultOfOperation;
-
-
         }
         public CreditCard ApllyGetCardAlgorithmPubic(int userClockId, PaidByUsTransaction transaction)
         {
@@ -145,72 +161,11 @@ namespace AmsalemLogic.NewLogic.Classes
             CreditCard result = null;
             try
             {
-                if (transaction.Id > 1)
+                if (transaction.Id != 0)// if there a transaction in the DB
                 {
-                    using (Entities db = new Entities())
-                    {
-
-                        var transactionLog = db.PaidByUsCreditCardTransactionLog.OrderByDescending(x => x.PaidByUsTransactionId == transaction.Id).FirstOrDefault(); // take the last save card for that transaction
-
-                        var cause = transactionLog.ReplacementCause;
-                        List<PaidByUsCreditCardTransactionLog> list = new List<PaidByUsCreditCardTransactionLog>();
-                        List<CreditCard> dfaultcards = null;
-
-                        if (cause == 0) // if Invalid Credit Company
-                        {
-                            var card = cards.Where(x => x.RecId == transactionLog.CreditCardRecId).FirstOrDefault();
-                            cards.RemoveAll(x => x.CreditCardType == card.CreditCardType);
-                            if (cards.Count == 0)
-                            {
-                                dfaultcards = GetDefaultCard();
-                                cards = RemoveInvalidCard(transaction, dfaultcards);
-                            }
-                        }
-                        else if (cause == 1) // if Invalid Card
-                        {
-                            cards = RemoveInvalidCard(transaction, cards);
-
-                            if (cards.Count == 0)
-                            {
-                                dfaultcards = GetDefaultCard();
-                                cards = RemoveInvalidCard(transaction, dfaultcards);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                }
-
-                var Euro = transaction.OriginalCurrencyCode == "EUR";
-                if (Euro)
-                {
-                    result = cards.Where(x => x.CreditCardType == "MC").FirstOrDefault();
-                    if (result == null)
-                    {
-                        result = cards.Where(x => x.CreditCardType == "AX").FirstOrDefault();
-                    }
-
-                    if (result == null)
-                    {
-                        result = cards.Where(x => x.CreditCardType == "DI").FirstOrDefault();
-                    }
-
-
-                    if (result == null)
-                    {
-                        result = cards.Where(x => x.CreditCardType == "VI").FirstOrDefault();
-                    }
-                }
-                else
-                {
-                    result = cards.Where(x => x.CreditCardType == "DI").FirstOrDefault();
-                    if (result == null)
-                    {
-                        result = cards.Where(x => x.CreditCardType == "VI").FirstOrDefault();
-                    }
-                }
-
+                    cards = GenerateCardListFromTransaction(transaction, cards);
+                }//if trans !=0
+                result = CurrencyAlgorithm(transaction, cards); 
             }
 
             catch (Exception ex)
@@ -222,7 +177,44 @@ namespace AmsalemLogic.NewLogic.Classes
             return result;
         }
 
-        private List<CreditCard> GetDefaultCard()
+        private CreditCard CurrencyAlgorithm(PaidByUsTransaction transaction, List<CreditCard> cards)
+        {
+            var result = new CreditCard();
+            var Euro = transaction.OriginalCurrencyCode == "EUR";
+            if (Euro)
+            {
+                result = cards.Where(x => x.CreditCardType == "MC").FirstOrDefault();
+                if (result == null)
+                {
+                    result = cards.Where(x => x.CreditCardType == "AX").FirstOrDefault();
+                }
+
+            }
+            else
+            {
+                result = cards.Where(x => x.CreditCardType == "DI").FirstOrDefault();
+                if (result == null)
+                {
+                    result = cards.Where(x => x.CreditCardType == "VI").FirstOrDefault();
+                }
+            }
+            return result;
+        }
+
+        private List<CreditCard> GenerateCardListFromTransaction(PaidByUsTransaction transaction, List<CreditCard> cards)
+        {
+            
+            cards = RemoveInvalidCards(transaction, cards);
+
+            if (cards.Count == 0)
+            {
+                cards = GetDefaultCards();
+                cards = RemoveInvalidCards(transaction, cards);
+            }
+            return cards;
+        }
+
+        private List<CreditCard> GetDefaultCards()
         {
             var retriever = new AXRertrieveCreditCards();
             var result = retriever.GetAllPaidByUsCreditCards();
@@ -230,28 +222,42 @@ namespace AmsalemLogic.NewLogic.Classes
             return result;
         }
 
-        private List<CreditCard> RemoveInvalidCard(PaidByUsTransaction transaction, List<CreditCard> cards)
+
+        /// <summary>
+        /// removes the cards that where used in the transaction.
+        /// </summary>
+        /// <param name="transaction">the current transacation</param>
+        /// <param name="cards">list of usable credit cards</param>
+        /// <returns></returns>
+        private List<CreditCard> RemoveInvalidCards(PaidByUsTransaction transaction, List<CreditCard> cards)
         {
-            List<CreditCard> result = null;
+            var transactionLog = transaction.PaidByUsCreditCardTransactionLog.FirstOrDefault(x => x.Active.Value); // take the last save card for that transaction
+            var cause = transactionLog.ReplacementCause;
 
-            using (Entities db = new Entities())
+            if (cause == 0) // if Invalid Credit Company
             {
-                var transactionLogInvalidCard = from x in db.PaidByUsCreditCardTransactionLog
-                                                where x.PaidByUsTransactionId.Value == transaction.Id
-                                                select x.CreditCardRecId;
-
-                foreach (var y in transactionLogInvalidCard)
-                {
-                    foreach (CreditCard card in cards.ToList())
-                    {
-                        if (card.RecId == y)
-                        {
-                            cards.Remove(card);
-                        }
-                    }
-                }
-                result = cards;
+                var card = cards.FirstOrDefault(x => x.RecId == transactionLog.CreditCardRecId);
+                cards.RemoveAll(x => x.CreditCardType == card.CreditCardType);
             }
+            List<CreditCard> result = null;
+            var transactionLogInvalidCards = (from x in transaction.PaidByUsCreditCardTransactionLog
+                                              where x.PaidByUsTransactionId.Value == transaction.Id
+                                              select x.CreditCardRecId).ToList();
+
+            result = cards.Where(x => !transactionLogInvalidCards.Contains(x.RecId)).ToList();
+
+            //The same as : 
+            //foreach (var y in transactionLogInvalidCard)
+            //{
+            //    foreach (CreditCard card in cards)
+            //    {
+            //        if (card.RecId == y)
+            //        {
+            //            cards.Remove(card);
+            //        }
+            //    }
+            //}
+            //result = cards;
             return result;
         }
 

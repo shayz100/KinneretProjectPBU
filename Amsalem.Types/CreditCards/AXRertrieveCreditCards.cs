@@ -23,7 +23,7 @@ namespace Amsalem.Types.CreditCards
             AxDBStatement += "  FROM                                                                                                 ";
             AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId,status         ";
             AxDBStatement += "  from [ELI_AMSALEMCREDITCARD]                                                                         ";
-            AxDBStatement += "  where DATAAREAID = @AxCompany                                                                               ";
+            AxDBStatement += "  where DATAAREAID = @AxCompany and status=1                                                                               ";
             if (!string.IsNullOrEmpty(listManagerBanks))
             {
                 AxDBStatement += "   and AMS_BANKNUMBER in ('25','26')           ";
@@ -58,13 +58,39 @@ namespace Amsalem.Types.CreditCards
             string AxDBStatement = ";WITH cte AS(                                                                                                ";
             AxDBStatement += "  SELECT *,ROW_NUMBER() OVER (PARTITION BY CREDITCARDNO ORDER BY RECID asc) AS rn                                  ";
             AxDBStatement += "  FROM                                                                                                             ";
-            AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId ";
+            AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId, status ";
             AxDBStatement += "  from [ELI_AMSALEMCREDITCARD]                                                                                     ";
             AxDBStatement += "  where DATAAREAID = @AxCompany                                                                                    ";
             AxDBStatement += "   and CREDITCARDNO = @CardNumber) ";
 
             List<SqlParameter> AxDBSqlParameters = new List<SqlParameter>();
             AxDBSqlParameters.Add(new SqlParameter("CardNumber", CreditCardNumber));
+
+            var AxDBresults = DataBaseAccess.PerformQueryToCompany(false, AxDBStatement, AxDBSqlParameters, dataAreaID);
+            CreditCard toReturn = null;
+            if (AxDBresults != null && AxDBresults.Rows.Count > 0)
+            {
+                toReturn = this.ParseSinglePaidByUsCard(AxDBresults.Rows[0]);
+            }
+            return toReturn;
+        }
+
+        public CreditCard RetrievePaidByUsSingleCreditCardByRecId(long recId, string dataAreaID, EBackOfficeType backOffice)
+        {
+            List<SqlParameter> SqlParameters = new List<SqlParameter>();
+
+            SqlParameters.Add(new SqlParameter("dataAreaID", dataAreaID));
+
+            string AxDBStatement = ";WITH cte AS(                                                                                                ";
+            AxDBStatement += "  SELECT *,ROW_NUMBER() OVER (PARTITION BY CREDITCARDNO ORDER BY RECID asc) AS rn                                  ";
+            AxDBStatement += "  FROM                                                                                                             ";
+            AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId, status ";
+            AxDBStatement += "  from [ELI_AMSALEMCREDITCARD]                                                                                     ";
+            AxDBStatement += "  where DATAAREAID = @AxCompany                                                                                    ";
+            AxDBStatement += "   and RECID = @RECID) ";
+
+            List<SqlParameter> AxDBSqlParameters = new List<SqlParameter>();
+            AxDBSqlParameters.Add(new SqlParameter("CardNumber", recId));
 
             var AxDBresults = DataBaseAccess.PerformQueryToCompany(false, AxDBStatement, AxDBSqlParameters, dataAreaID);
             CreditCard toReturn = null;
