@@ -77,18 +77,21 @@ namespace AmsalemLogic.NewLogic.Classes
         }
 
         public string GetTransactionHash(PaidByUsTransaction transaction)
-        {
-
-            
+        { 
             var transactionLog = transaction.PaidByUsCreditCardTransactionLog.FirstOrDefault(x => x.Active.Value);
             var cardRecId = transactionLog.CreditCardRecId;
 
             var retriever = new AXRertrieveCreditCards();
-            var cards = retriever.RetrievePaidByUsSingleCreditCardByRecId(cardRecId.Value, transaction.BackOfficeCompany, EBackOfficeType.AX);
+            var card = retriever.RetrievePaidByUsSingleCreditCardByRecId(cardRecId.Value, transaction.BackOfficeCompany, EBackOfficeType.AX);
 
-
-
-            return transactionLog.ImageName;
+            var expirationYear = card.CreditCardExpirationDate.ToString("yy");
+            var expirationMonth =   card.CreditCardExpirationDate.ToString("MM");
+            var cardNumber = card.CreditCardInternalIdentifier.ToString();
+            var cardHashName = cardNumber.Substring(0, 4) +
+                               cardNumber.Substring(cardNumber.Length - 4, 4) +
+                               expirationMonth + expirationYear;
+            
+            return cardHashName;
         }
 
         public PaidByUsTransaction RetrieveTransactionById(int id, bool activeOnly)
