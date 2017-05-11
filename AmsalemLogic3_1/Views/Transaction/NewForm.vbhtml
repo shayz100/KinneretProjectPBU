@@ -51,7 +51,7 @@
                         success: function (data) {
                             if (data.Success) {
 
-                                window.location = '/Transaction/TransactionToPDF/' + data.Additional;
+                                window.location = '/Transaction/Details/' + data.Additional;
                                 toastr.success("Transaction " + data.Additional + " Created");
                             }
                             else {

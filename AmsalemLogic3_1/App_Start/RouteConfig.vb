@@ -14,11 +14,5 @@ Public Module RouteConfig
             url:="{controller}/{action}/{id}",
             defaults:=New With {.controller = "Home", .action = "Index", .id = UrlParameter.Optional}
         )
-
-        routes.MapRoute(
-         name:="Default1",
-         url:="{controller}/{action}/{Id}/{Id2}",
-         defaults:=New With {.controller = "Home", .action = "Index", .Id = UrlParameter.Optional, .Id2 = UrlParameter.Optional}
-     )
     End Sub
 End Module

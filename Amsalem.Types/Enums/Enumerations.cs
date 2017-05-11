@@ -66,9 +66,10 @@ namespace Amsalem.Types
     public enum Status
     {
         Pending = 0,
-        Payed = 1,
+        Paid = 1,
         Cancelled = 2
     }
+
     public enum ReplacementCause
     {
         InvalidCreditCompany = 0,

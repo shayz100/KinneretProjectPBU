@@ -36,7 +36,7 @@ Namespace Controllers
 
         End Function
 
-        Function Create(transaction As PaidByUsTransaction) As ActionResult
+        Function Create(transaction As PaidByUsTransactionDTO) As ActionResult
             Dim handler = New PaidByUsHandler()
             Dim mockUp = New MockupController()
             transaction.SupplierAccountNum = mockUp.GetVendorIdByName(transaction.SupplierName)
@@ -46,21 +46,23 @@ Namespace Controllers
 
         End Function
 
-        Function TransactionToPDF(id As String) As ActionResult
-            Dim transaction = New PaidByUsTransaction()
+        Function Details(id As Integer) As ActionResult
             Dim handler = New PaidByUsHandler()
-            transaction = handler.GetTransaction(id)
+            Dim transaction = handler.GetTransaction(id)
             ViewBag.Transaction = transaction
             ViewBag.ImageHash = handler.GetTransactionHash(transaction)
             Return View()
         End Function
 
-        Function SwitchCard(Id As Integer, Id2 As Integer) As ActionResult
+        'Function SwitchCard(Id As Integer, Id2 As Integer) As ActionResult
+        Function SwitchCard() As ActionResult
+            Dim transaction = New PaidByUsTransactionDTO()
             Dim user = ClassUsers.GetCurrentUser()
-            Dim transaction = New PaidByUsTransaction()
             Dim handler = New PaidByUsHandler()
-            transaction = handler.GetTransaction(Id)
-            Dim rop = handler.ReplaceCard(transaction, user, Id2)
+            'transaction = handler.GetTransaction(Id)
+            'Dim rop = handler.ReplaceCard(transaction, user, Id2)
+            transaction = handler.GetTransaction(10015)
+            Dim rop = handler.ReplaceCard(transaction, user, 1)
             ViewBag.Transaction = transaction
             ViewBag.ImageHash = handler.GetTransactionHash(transaction)
             Return View()

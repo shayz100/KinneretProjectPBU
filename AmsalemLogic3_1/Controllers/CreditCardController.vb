@@ -18,8 +18,8 @@ Namespace Controllers
 
             If (PermissionCheck("Credit Card Admin")) Then
                 Dim Handler = New PaidByUsHandler()
-                Dim ListOfCardes = Handler.GetAllCards
-                Return View(ListOfCardes)
+                Dim ListOfCards = Handler.GetAllCards()
+                Return View(ListOfCards)
             Else
                 Return Redirect("/Home/Index")
 

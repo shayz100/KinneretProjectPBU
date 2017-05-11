@@ -66,7 +66,7 @@ namespace Amsalem.Types.CreditCards
             var cardNumber = this.CreditCardInternalIdentifier.ToString();
             var cardHashName = cardNumber.Substring(0, 4) +
                                cardNumber.Substring(cardNumber.Length - 4, 4) +
-                               expirationMonth + expirationYear;
+                               expirationMonth + expirationYear; 
             return cardHashName;
         }
     }

@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="Classes\AX\MongoDB\MongoDBHandler.cs" />
     <Compile Include="Classes\PaidByUsHandler.cs" />
+    <Compile Include="Classes\PaidByUsTransactionDTO.cs" />
     <Compile Include="Classes\Services\JavascriptExtension.cs" />
     <Compile Include="Entity Framework\PaidByUsCreditCardTransactionLog.cs">
       <DependentUpon>TransactionEF.tt</DependentUpon>

@@ -601,7 +601,8 @@
     <Content Include="Views\CreditCard\CreditCardTable.vbhtml" />
     <Content Include="Views\CreditCard\Unauthorized.vbhtml" />
     <Content Include="Views\Transaction\NewForm.vbhtml" />
-    <Content Include="Views\Transaction\TransactionToPDF.vbhtml" />
+    <Content Include="Views\Transaction\Details.vbhtml" />
+    <Content Include="Views\Transaction\SendToEmail.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

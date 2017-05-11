@@ -23,7 +23,7 @@ namespace Amsalem.Types.CreditCards
             AxDBStatement += "  FROM                                                                                                 ";
             AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId,status         ";
             AxDBStatement += "  from [ELI_AMSALEMCREDITCARD]                                                                         ";
-            AxDBStatement += "  where DATAAREAID = @AxCompany and status=1                                                                               ";
+            AxDBStatement += "  where DATAAREAID = @AxCompany  and status=1                                                                              ";
             if (!string.IsNullOrEmpty(listManagerBanks))
             {
                 AxDBStatement += "   and AMS_BANKNUMBER in ('25','26')           ";
@@ -58,11 +58,11 @@ namespace Amsalem.Types.CreditCards
             string AxDBStatement = ";WITH cte AS(                                                                                                ";
             AxDBStatement += "  SELECT *,ROW_NUMBER() OVER (PARTITION BY CREDITCARDNO ORDER BY RECID asc) AS rn                                  ";
             AxDBStatement += "  FROM                                                                                                             ";
-            AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId, status ";
+            AxDBStatement += "  (select EXPIRYDATE, CREDITCARDNO, CVV, RECID, COMPANYID, AMS_BANKNUMBER ,EMPLID, DATAAREAID, AMS_EmpGovernmentId ";
             AxDBStatement += "  from [ELI_AMSALEMCREDITCARD]                                                                                     ";
             AxDBStatement += "  where DATAAREAID = @AxCompany                                                                                    ";
-            AxDBStatement += "   and CREDITCARDNO = @CardNumber) d) ";
-            AxDBStatement += "  select * FROM cte where rn=1        ";
+            AxDBStatement += "   and CREDITCARDNO = @CardNumber) ";
+
             List<SqlParameter> AxDBSqlParameters = new List<SqlParameter>();
             AxDBSqlParameters.Add(new SqlParameter("CardNumber", CreditCardNumber));
 
@@ -74,7 +74,6 @@ namespace Amsalem.Types.CreditCards
             }
             return toReturn;
         }
-
         public CreditCard RetrievePaidByUsSingleCreditCardByRecId(long recId, string dataAreaID, EBackOfficeType backOffice)
         {
             List<SqlParameter> SqlParameters = new List<SqlParameter>();
@@ -102,7 +101,6 @@ namespace Amsalem.Types.CreditCards
             }
             return toReturn;
         }
-
         private CreditCard ParseSinglePaidByUsCard(DataRow row)
         {
             var toAdd = new CreditCard();

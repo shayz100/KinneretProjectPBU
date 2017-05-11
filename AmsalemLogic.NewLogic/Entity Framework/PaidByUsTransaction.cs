@@ -36,7 +36,9 @@ namespace AmsalemLogic.NewLogic.Entity_Framework
         public string Item { get; set; }
         public string CustomerName { get; set; }
         public Nullable<decimal> OriginalAmount { get; set; }
-    
+        public Nullable<int> ProductType { get; set; }
+        public Nullable<int> ProductIdentifier { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PaidByUsCreditCardTransactionLog> PaidByUsCreditCardTransactionLog { get; set; }
     }

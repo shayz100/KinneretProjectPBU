@@ -40,6 +40,8 @@
           <Property Name="ModifiedDateTime" Type="datetime" />
           <Property Name="CustomerName" Type="nvarchar" MaxLength="60" />
           <Property Name="Item" Type="nvarchar" MaxLength="60" />
+          <Property Name="ProductType" Type="int" />
+          <Property Name="ProductIdentifier" Type="int" />
         </EntityType>
         <Association Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">
           <End Role="PaidByUsTransaction" Type="Self.PaidByUsTransaction" Multiplicity="0..1" />
@@ -102,6 +104,8 @@
           <NavigationProperty Name="PaidByUsCreditCardTransactionLog" Relationship="Self.FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction" FromRole="PaidByUsTransaction" ToRole="PaidByUsCreditCardTransactionLog" />
           <Property Name="CustomerName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="OriginalAmount" Type="Decimal" Precision="16" Scale="2" />
+          <Property Name="ProductType" Type="Int32" />
+          <Property Name="ProductIdentifier" Type="Int32" />
         </EntityType>
         <Association Name="FK_PaidByUsCreditCardTransactionLog_PaidByUsTransaction">
           <End Role="PaidByUsTransaction" Type="Self.PaidByUsTransaction" Multiplicity="0..1" />
@@ -148,6 +152,8 @@
           <EntitySetMapping Name="PaidByUsTransaction">
             <EntityTypeMapping TypeName="Model.PaidByUsTransaction">
               <MappingFragment StoreEntitySet="PaidByUsTransaction">
+                <ScalarProperty Name="ProductIdentifier" ColumnName="ProductIdentifier" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
                 <ScalarProperty Name="OriginalAmount" ColumnName="OriginalAmount" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

@@ -112,7 +112,7 @@ namespace AmsalemLogic.NewLogic.Classes.Products.ArchiveMongoDB
                 var fileInfo = cursor.ToList().FirstOrDefault();
                 if (fileInfo == null)
                 {
-                    return ReadImage("000000000000"); //Image Not Available.
+                    return ReadImage("000000001111"); //Image Not Available.
                 }
                 else
                 {
